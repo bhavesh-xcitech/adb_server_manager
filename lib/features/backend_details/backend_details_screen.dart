@@ -5,12 +5,12 @@ import 'package:adb_server_manager/common_widgets/app_button.dart';
 import 'package:adb_server_manager/common_widgets/app_gap_height.dart';
 import 'package:adb_server_manager/common_widgets/app_gap_width.dart';
 import 'package:adb_server_manager/common_widgets/app_text.dart';
+import 'package:adb_server_manager/common_widgets/custopm_top_snackbar.dart';
 import 'package:adb_server_manager/features/backend_details/bloc/backends_control_options_bloc.dart';
 import 'package:adb_server_manager/features/server_list/bloc/backend_listing_bloc.dart';
 import 'package:adb_server_manager/features/server_list/models/pm2_env_model.dart';
 import 'package:adb_server_manager/features/server_list/widgets/double_text.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
-import 'package:adb_server_manager/resource/app_snackbar.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -126,48 +126,48 @@ class _BackendDetailsState extends State<BackendDetails> {
             BackendsControlOptionsState>(
           listener: (context, state) {
             if (state.startStatus.isSubmissionFailure) {
-              showMySnackBar(
+              CustomSnackBar.show(
                   context: context,
                   message: state.errorMsg ?? AppStrings.apiErrorMsg);
             }
             if (state.startStatus.isSubmissionSuccess) {
               context.read<BackendListingBloc>().add(InitiateListing());
-              showMySnackBar(
+              CustomSnackBar.show(
                 context: context,
                 message: state.successMsg ?? '',
               );
             }
             if (state.stopStatus.isSubmissionFailure) {
-              showMySnackBar(
+              CustomSnackBar.show(
                   context: context,
                   message: state.errorMsg ?? AppStrings.apiErrorMsg);
             }
             if (state.stopStatus.isSubmissionSuccess) {
               context.read<BackendListingBloc>().add(InitiateListing());
-              showMySnackBar(
+              CustomSnackBar.show(
                 context: context,
                 message: state.successMsg ?? '',
               );
             }
             if (state.restartStatus.isSubmissionFailure) {
-              showMySnackBar(
+              CustomSnackBar.show(
                   context: context,
                   message: state.errorMsg ?? AppStrings.apiErrorMsg);
             }
             if (state.restartStatus.isSubmissionSuccess) {
               context.read<BackendListingBloc>().add(InitiateListing());
-              showMySnackBar(
+              CustomSnackBar.show(
                 context: context,
                 message: state.successMsg ?? '',
               );
             }
             if (state.deleteStatus.isSubmissionFailure) {
-              showMySnackBar(
+              CustomSnackBar.show(
                   context: context,
                   message: state.errorMsg ?? AppStrings.apiErrorMsg);
             }
             if (state.deleteStatus.isSubmissionSuccess) {
-              showMySnackBar(
+              CustomSnackBar.show(
                 context: context,
                 message: state.successMsg ?? '',
               );
@@ -281,6 +281,9 @@ class _BackendDetailsState extends State<BackendDetails> {
                                     // const GapW(15),
                                     Flexible(
                                       child: AppCommonButton(
+                                        isEnable:
+                                            (pM2ProcessInfo?.pm2Env?.status ==
+                                                "online"),
                                         margin: const EdgeInsets.symmetric(
                                             horizontal: 5),
                                         isLoading: state
@@ -313,111 +316,60 @@ class _BackendDetailsState extends State<BackendDetails> {
             },
           ),
         ),
-        bottomNavigationBar:
-            BlocBuilder<BackendListingBloc, BackendListingState>(
-          builder: (listingContext, listingState) {
-            return BlocBuilder<BackendsControlOptionsBloc,
-                BackendsControlOptionsState>(
-              builder: (context, state) {
-                if (listingState.formStatus.isSubmissionSuccess) {
-                  return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 20),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          AppCommonButton(
-                            isLoading:
-                                state.restartStatus.isSubmissionInProgress,
-                            text: AppStrings.restart,
-                            onTap: () {
-                              context.read<BackendsControlOptionsBloc>().add(
-                                  OnClickOfRestart(
-                                      name: pM2ProcessInfo?.name ?? ""));
-                            },
-                          ),
-                          const GapH(15),
-                          AppCommonButton(
-                            color: Colors.red,
-                            isLoading:
-                                state.deleteStatus.isSubmissionInProgress,
-                            text: AppStrings.delete,
-                            onTap: () {
-                              if (Platform.isIOS) {
-                                showAlertDialog(context);
-                              } else {
-                                androidDialog(context);
-                              }
+        bottomNavigationBar: SafeArea(
+          child: BlocBuilder<BackendListingBloc, BackendListingState>(
+            builder: (listingContext, listingState) {
+              return BlocBuilder<BackendsControlOptionsBloc,
+                  BackendsControlOptionsState>(
+                builder: (context, state) {
+                  if (listingState.formStatus.isSubmissionSuccess) {
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AppCommonButton(
+                              isLoading:
+                                  state.restartStatus.isSubmissionInProgress,
+                              text: AppStrings.restart,
+                              onTap: () {
+                                context.read<BackendsControlOptionsBloc>().add(
+                                    OnClickOfRestart(
+                                        name: pM2ProcessInfo?.name ?? ""));
+                              },
+                            ),
+                            const GapH(15),
+                            AppCommonButton(
+                              color: Colors.red,
+                              isLoading:
+                                  state.deleteStatus.isSubmissionInProgress,
+                              text: AppStrings.delete,
+                              onTap: () {
+                                if (Platform.isIOS) {
+                                  showAlertDialog(context);
+                                } else {
+                                  androidDialog(context);
+                                }
 
-                              // showAlertDialog(context);
-                              // context.read<BackendsControlOptionsBloc>().add(
-                              //     OnClickOfDelete(
-                              //         name: pM2ProcessInfo?.name ?? ""));
-                            },
-                          ),
-                        ],
-                      ));
-                } else {
-                  return Container();
-                }
-              },
-            );
-          },
+                                // showAlertDialog(context);
+                                // context.read<BackendsControlOptionsBloc>().add(
+                                //     OnClickOfDelete(
+                                //         name: pM2ProcessInfo?.name ?? ""));
+                              },
+                            ),
+                          ],
+                        ));
+                  } else {
+                    return Container(
+                      height: 1,
+                    );
+                  }
+                },
+              );
+            },
+          ),
         ),
-
-        //  sdbfhjdbgbhjgrbnmgbrbhb
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // floatingActionButton:
-        //     BlocBuilder<BackendListingBloc, BackendListingState>(
-        //   builder: (listingContext, listingState) {
-        //     return BlocBuilder<BackendsControlOptionsBloc,
-        //         BackendsControlOptionsState>(
-        //       builder: (context, state) {
-        //         if (listingState.formStatus.isSubmissionSuccess) {
-        //           return Padding(
-        //               padding: const EdgeInsets.symmetric(
-        //                   horizontal: 20, vertical: 20),
-        //               child: Column(
-        //                 mainAxisSize: MainAxisSize.min,
-        //                 children: [
-        //                   AppCommonButton(
-        //                     isLoading:
-        //                         state.restartStatus.isSubmissionInProgress,
-        //                     text: AppStrings.restart,
-        //                     onTap: () {
-        //                       context.read<BackendsControlOptionsBloc>().add(
-        //                           OnClickOfRestart(
-        //                               name: pM2ProcessInfo?.name ?? ""));
-        //                     },
-        //                   ),
-        //                   const GapH(15),
-        //                   AppCommonButton(
-        //                     color: Colors.red,
-        //                     isLoading:
-        //                         state.deleteStatus.isSubmissionInProgress,
-        //                     text: AppStrings.delete,
-        //                     onTap: () {
-        //                       if (Platform.isIOS) {
-        //                         showAlertDialog(context);
-        //                       } else {
-        //                         androidDialog(context);
-        //                       }
-
-        //                       // showAlertDialog(context);
-        //                       // context.read<BackendsControlOptionsBloc>().add(
-        //                       //     OnClickOfDelete(
-        //                       //         name: pM2ProcessInfo?.name ?? ""));
-        //                     },
-        //                   ),
-        //                 ],
-        //               ));
-        //         } else {
-        //           return Container();
-        //         }
-        //       },
-        //     );
-        //   },
-        // ),
       ),
     );
   }
