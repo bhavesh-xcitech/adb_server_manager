@@ -29,7 +29,7 @@ class _BackendsListingScreenState extends State<BackendsListingScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: const CommonAppBar(
-          text: AppStrings.serverListing, isNeedBackBtn: false),
+          text: AppStrings.adbMonitor, isNeedBackBtn: false),
       body: SafeArea(
         child: BlocListener<BackendListingBloc, BackendListingState>(
           listener: (context, state) {},

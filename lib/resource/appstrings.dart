@@ -25,7 +25,8 @@ class AppStrings {
   static const String register = "register";
   static const String hello = "Hello!";
   static const String doNotHaveAccount = "Do Not Have Account?";
-  static const String welcomeBack = "Welcome Back To PM2";
+  static const String welcomeBack = "Welcome To ADBMonitor";
+  static const String adbMonitor = "ADBMonitor";
   
   static const String deleteConfigurationFromServerWarning = "Are you sure? you want to delete configuration from server?";
 }

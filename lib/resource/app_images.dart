@@ -1,3 +1,3 @@
 class AppImages {
-  static const String kPowerIcon = 'assets/images/power.png';
+  static const String logo = 'assets/images/logo.png';
 }

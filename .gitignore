@@ -29,8 +29,8 @@
 .pub-cache/
 .pub/
 /build/
-dotenv-dev
-dotenv-stage
+.env
+
 
 # Web related
 lib/generated_plugin_registrant.dart

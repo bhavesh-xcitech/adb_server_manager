@@ -3,6 +3,7 @@ import 'package:adb_server_manager/common_widgets/app_gap_height.dart';
 import 'package:adb_server_manager/common_widgets/app_text.dart';
 import 'package:adb_server_manager/common_widgets/app_textfild.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
+import 'package:adb_server_manager/resource/app_images.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,12 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Container(
+            height: 200,
+            width: 200,
+            decoration: const BoxDecoration(
+                image: DecorationImage(image: AssetImage(AppImages.logo))),
+          ),
           Center(
             child: Container(
               margin: const EdgeInsets.all(10),

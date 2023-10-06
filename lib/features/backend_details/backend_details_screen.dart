@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:adb_server_manager/app_globle.dart';
@@ -32,14 +31,7 @@ class BackendDetails extends StatefulWidget {
 }
 
 class _BackendDetailsState extends State<BackendDetails> {
-  final StreamController<String> _logStreamController =
-      StreamController<String>();
-
-  @override
-  void initState() {
-    AppGlobals().streamSocket.getResponse().listen((data) {});
-    super.initState();
-  }
+  List dataList = [];
 
   String changeTimeFormate(milliseconds) {
     int timestamp = milliseconds; // Replace this with your actual timestamp
@@ -99,6 +91,9 @@ class _BackendDetailsState extends State<BackendDetails> {
         body: StreamBuilder(
             stream: AppGlobals().streamSocket.getResponse(),
             builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.data != null) {
+                dataList.add(snapshot.data.toString());
+              }
               return BlocListener<BackendsControlOptionsBloc,
                   BackendsControlOptionsState>(
                 listener: (context, state) {
@@ -155,7 +150,6 @@ class _BackendDetailsState extends State<BackendDetails> {
                 },
                 child: BlocBuilder<BackendListingBloc, BackendListingState>(
                   builder: (listingContext, listingState) {
-                  
                     return BlocBuilder<BackendsControlOptionsBloc,
                         BackendsControlOptionsState>(builder: (context, state) {
                       pM2ProcessInfo =
@@ -298,43 +292,54 @@ class _BackendDetailsState extends State<BackendDetails> {
                                       const GapH(8),
                                       Expanded(
                                         child: Container(
-                                          padding: const EdgeInsets.all(4),
-                                          width: double.maxFinite,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: AppColors
-                                                      .secondaryColor)),
-                                          child: snapshot.connectionState ==
-                                                  ConnectionState.waiting
-                                              ? const Center(
-                                                  child:
-                                                      CircularProgressIndicator
-                                                          .adaptive(),
-                                                )
-                                              : snapshot.hasError
-                                                  ? Text(
-                                                      "Error: ${snapshot.error}")
-                                                  : snapshot.data == null
-                                                      ? const SingleChildScrollView(
-                                                          child: Text(
-                                                              "No data available"),
-                                                        )
-                                                      : Container(
-                                                          child: Text(
-                                                            snapshot.data
-                                                                .toString(),
-                                                            style:
-                                                                const TextStyle(
-                                                              color: AppColors
-                                                                  .decorationColor,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            ),
-                                                          ),
-                                                        ),
-                                        ),
+                                            padding: const EdgeInsets.all(4),
+                                            width: double.maxFinite,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: AppColors
+                                                        .secondaryColor)),
+                                            child:
+                                                //  snapshot.connectionState ==
+                                                //         ConnectionState.waiting
+                                                //     ? const Center(
+                                                //         child:
+                                                //             CircularProgressIndicator
+                                                //                 .adaptive(),
+                                                //       )
+                                                //     :
+                                                snapshot.hasError
+                                                    ? Text(
+                                                        "Error: ${snapshot.error}")
+                                                    : dataList.isEmpty
+                                                        ? const Center(
+                                                            child: GoogleText(
+                                                                text:
+                                                                    "No logs available"),
+                                                          )
+                                                        : ListView.builder(
+                                                            itemCount:
+                                                                dataList.length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return Container(
+                                                                child: Text(
+                                                                  dataList[
+                                                                      index],
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color: AppColors
+                                                                        .decorationColor,
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          )),
                                       ),
                                     ],
                                   ),

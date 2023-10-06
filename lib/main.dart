@@ -16,16 +16,11 @@ void main() async {
     print("function callled ");
     var socket = io.io("https://projects.xcitech.in", <String, dynamic>{
       'transports': ['websocket'], // Use WebSocket transport
-      // 'autoConnect': false,
-      // 'query': 'EIO=4&transport=polling',
-      // 'forceNew': true,
     });
     socket.onConnect((_) {
-      print('connect');
       socket.emit('msg', 'test');
     });
     socket.on('connect', (_) {
-      print("i amm callleddd");
       socket.emit('start-logs');
     });
 
@@ -35,23 +30,9 @@ void main() async {
 
       AppGlobals().streamSocket.addResponse(data);
     });
-    socket.on('pm2-log-error',
-        (data) => AppGlobals().streamSocket.addResponse(data));
-    // socket.on('pm2-log', (data) {
-    //   print(data);
-    //   // print("lalalaalalla");
-    //   setState(() {
-    //     logTextController.text += data + '\n'; // Update log messages in your UI
-    //   });
-    // });
+    socket.on(
+        'pm2-log-error', (data) => AppGlobals().streamSocket.addResponse(data));
 
-    // socket.on('pm2-log-error', (data) {
-    //   print("pm2 errrorrr is called");
-    //   setState(() {
-    //     logTextController.text +=
-    //         data + '\n'; // Update error messages in your UI
-    //   });
-    // });
     socket.onDisconnect((_) => print('disconnect'));
   }
 
