@@ -1,4 +1,3 @@
-import 'package:adb_server_manager/common_widgets/app_bar.dart';
 import 'package:adb_server_manager/common_widgets/app_button.dart';
 import 'package:adb_server_manager/common_widgets/app_gap_height.dart';
 import 'package:adb_server_manager/common_widgets/app_text.dart';
@@ -23,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: const CommonAppBar(text: AppStrings.logIn, isNeedBackBtn: false),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
