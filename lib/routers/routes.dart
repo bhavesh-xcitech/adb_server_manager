@@ -1,4 +1,5 @@
 import 'package:adb_server_manager/features/backend_details/backend_details_screen.dart';
+import 'package:adb_server_manager/features/login/log_in_screen.dart';
 import 'package:adb_server_manager/features/server_list/backends_list_screen.dart';
 import 'package:adb_server_manager/routers/error_screen.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
@@ -35,8 +36,15 @@ class AppRouter {
           key: state.pageKey,
           child: BackendDetails(
             index: (state.extra as Map)['index'],
-            // pM2ProcessInfo: (state.extra as Map)['pM2ProcessInfo'],
           ),
+        ),
+      ),
+      GoRoute(
+        name: AppRouteNames.logIn,
+        path: AppRouteNames.logIn,
+        pageBuilder: (context, state) => MaterialPage(
+          key: state.pageKey,
+          child: const LoginScreen(),
         ),
       ),
       // GoRoute(

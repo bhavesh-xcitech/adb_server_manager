@@ -18,7 +18,14 @@ class AppStrings {
   static const String restart = "Restart";
   static const String delete = "Delete";
   static const String apiErrorMsg = "Something Went Wrong";
-  static const String yourListIsEmpty = "Something Went Wrong";
+  static const String yourListIsEmpty = "List Is Empty";
+  static const String email = "Email";
+  static const String password = "password";
+  static const String logIn = "Log-In";
+  static const String register = "register";
+  static const String hello = "Hello!";
+  static const String doNotHaveAccount = "Do Not Have Account?";
+  static const String welcomeBack = "Welcome Back To PM2";
   
   static const String deleteConfigurationFromServerWarning = "Are you sure? you want to delete configuration from server?";
 }
