@@ -18,48 +18,8 @@ class BackendsListingScreen extends StatefulWidget {
 }
 
 class _BackendsListingScreenState extends State<BackendsListingScreen> {
-  // void connectAndListen() {
-  //   print("function callled ");
-  //   var socket = io.io('http://192.168.29.170:8080', <String, dynamic>{
-  //     'transports': ['websocket'], // Use WebSocket transport
-  //     // 'autoConnect': false,
-  //     // 'query': 'EIO=4&transport=polling',
-  //     // 'forceNew': true,
-  //   });
-  //   socket.onConnect((_) {
-  //     print('connect');
-  //     socket.emit('msg', 'test');
-  //   });
-
-  //   //When an event recieved from server, data is added to the stream
-  //   socket.on('pm2-log', (data) {
-  //     streamSocket.addResponse;
-  //     print(data);
-  //   });
-  //   socket.on('pm2-log-error', (data) => streamSocket.addResponse);
-  //   // socket.on('pm2-log', (data) {
-  //   //   print(data);
-  //   //   // print("lalalaalalla");
-  //   //   setState(() {
-  //   //     logTextController.text += data + '\n'; // Update log messages in your UI
-  //   //   });
-  //   // });
-
-  //   // socket.on('pm2-log-error', (data) {
-  //   //   print("pm2 errrorrr is called");
-  //   //   setState(() {
-  //   //     logTextController.text +=
-  //   //         data + '\n'; // Update error messages in your UI
-  //   //   });
-  //   // });
-  //   socket.onDisconnect((_) => print('disconnect'));
-  // }
-
-  // BackendListingBloc backendListingBloc = BackendListingBloc();
   @override
   void initState() {
-    // TODO: implement initState
-    // connectAndListen();
     context.read<BackendListingBloc>().add(InitiateListing());
     super.initState();
   }
@@ -72,11 +32,7 @@ class _BackendsListingScreenState extends State<BackendsListingScreen> {
           text: AppStrings.serverListing, isNeedBackBtn: false),
       body: SafeArea(
         child: BlocListener<BackendListingBloc, BackendListingState>(
-          listener: (context, state) {
-            print("statetettee issisis");
-            print(state.formStatus);
-            // TODO: implement listener
-          },
+          listener: (context, state) {},
           child: BlocBuilder<BackendListingBloc, BackendListingState>(
             builder: (context, state) {
               return state.formStatus.isSubmissionInProgress
@@ -105,14 +61,7 @@ class _BackendsListingScreenState extends State<BackendsListingScreen> {
                                   itemBuilder: (context, index) {
                                     return BackendDataBox(
                                         index: index,
-                                        pm2Data: state.backendsDataList[index]
-                                        // PM2ProcessInfo(
-                                        //     pm2Env: Pm2Env(
-                                        //       status: "online",
-                                        //       createdAt: 7834578,
-                                        //     ),
-                                        //     name: "api name"),
-                                        );
+                                        pm2Data: state.backendsDataList[index]);
                                   },
                                 ),
                               ))
