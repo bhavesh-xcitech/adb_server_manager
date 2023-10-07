@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:adb_server_manager/network_services/api_interceptor.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 // class DioClient {
 //   late Dio _dio;
 //   late String baseUrl;
@@ -40,7 +41,7 @@ class DioClient {
   }
 
   DioClient._internal() {
-    baseUrl = "https://projects.xcitech.in/pm2-api/";
+    baseUrl = dotenv.env['BASE_URL'] ?? '';
     // "https://projects.xcitech.in/pm2-api/";
 
     _dio = Dio();
@@ -53,8 +54,9 @@ class DioClient {
         },
       ),
     );
-    _dio..options.baseUrl = baseUrl
-    ..httpClientAdapter;
+    _dio
+      ..options.baseUrl = baseUrl
+      ..httpClientAdapter;
     // ..options.headers = {'Content-Type': 'application/json; charset=UTF-8'};
 
     _dio.interceptors.add(ApiInterceptors().getInterceptor());
@@ -68,7 +70,6 @@ class DioClient {
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-
       var response = await _dio.get(
         uri,
         queryParameters: queryParameters,

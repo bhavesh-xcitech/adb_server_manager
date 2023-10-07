@@ -13,8 +13,7 @@ void main() async {
   await dotenv.load(fileName: '.env');
 
   void connectAndListen() {
-    print("function callled ");
-    var socket = io.io("https://projects.xcitech.in", <String, dynamic>{
+    var socket = io.io(dotenv.env['SOCKET_URL'] ?? '', <String, dynamic>{
       'transports': ['websocket'], // Use WebSocket transport
     });
     socket.onConnect((_) {

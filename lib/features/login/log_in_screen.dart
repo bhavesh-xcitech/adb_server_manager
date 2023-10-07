@@ -2,6 +2,7 @@ import 'package:adb_server_manager/common_widgets/app_button.dart';
 import 'package:adb_server_manager/common_widgets/app_gap_height.dart';
 import 'package:adb_server_manager/common_widgets/app_text.dart';
 import 'package:adb_server_manager/common_widgets/app_textfild.dart';
+import 'package:adb_server_manager/common_widgets/custopm_top_snackbar.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
 import 'package:adb_server_manager/resource/app_images.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
@@ -17,8 +18,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController emailController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,49 +41,64 @@ class _LoginScreenState extends State<LoginScreen> {
               decoration: const BoxDecoration(
                   color: AppColors.secondaryBackgroundColor,
                   borderRadius: BorderRadius.all(Radius.circular(10))),
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const GoogleText(
-                    text: AppStrings.hello,
-                    fontSize: 17,
-                  ),
-                  const GoogleText(
-                    text: AppStrings.welcomeBack,
-                    fontSize: 15,
-                  ),
-                  const GapH(10),
-                  AppBorderTextFormField(
-                    controller: emailController,
-                    hintText: AppStrings.email,
-                  ),
-                  const GapH(10),
-                  AppBorderTextFormField(
-                    controller: passController,
-                    hintText: AppStrings.password,
-                  ),
-                  const GapH(20),
-                  AppCommonButton(
-                      onTap: () {
-                        context.pushReplacement(AppRouteNames.serverListing);
+              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const GoogleText(
+                      text: AppStrings.hello,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    const GoogleText(
+                      text: AppStrings.welcomeBack,
+                      fontSize: 15,
+                    ),
+                    const GapH(10),
+                    AppBorderTextFormField(
+                      validator: (String? value) {
+                        if (value == null || value.trim() == '') {
+                          return AppStrings.usernameIsRequired;
+                        }
+
+                        return null;
                       },
-                      text: AppStrings.logIn),
-                  Row(
-                    children: [
-                      const GoogleText(
-                        text: AppStrings.doNotHaveAccount,
-                        fontSize: 12,
-                      ),
-                      TextButton(
-                          onPressed: () {},
-                          child: const GoogleText(
-                            text: AppStrings.register,
-                            textColor: Colors.blue,
-                          ))
-                    ],
-                  )
-                ],
+                      controller: userNameController,
+                      hintText: AppStrings.userName,
+                    ),
+                    const GapH(10),
+                    AppBorderTextFormField(
+                      controller: passController,
+                      hintText: AppStrings.password,
+                      validator: (String? value) {
+                        if (value == null || value.trim() == '') {
+                          return AppStrings.passwordIsRequired;
+                        }
+
+                        return null;
+                      },
+                    ),
+                    const GapH(20),
+                    AppCommonButton(
+                        onTap: () {
+                          bool isValidate = _formKey.currentState!.validate();
+                          if (isValidate) {
+                            if (userNameController.text == "server" &&
+                                passController.text == "P@ssw0rd") {
+                              context
+                                  .pushReplacement(AppRouteNames.serverListing);
+                            } else {
+                              CustomSnackBar.show(
+                                  context: context,
+                                  message: "invalid username/password!");
+                            }
+                          }
+                        },
+                        text: AppStrings.logIn),
+                  ],
+                ),
               ),
             ),
           )
