@@ -6,4 +6,7 @@ abstract class BackendListingEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
-class InitiateListing extends BackendListingEvent{}
+
+class InitiateListing extends BackendListingEvent {}
+
+

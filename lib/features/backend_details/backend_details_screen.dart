@@ -7,13 +7,13 @@ import 'package:adb_server_manager/common_widgets/app_gap_height.dart';
 import 'package:adb_server_manager/common_widgets/app_text.dart';
 import 'package:adb_server_manager/common_widgets/custopm_top_snackbar.dart';
 import 'package:adb_server_manager/features/backend_details/bloc/backends_control_options_bloc.dart';
-import 'package:adb_server_manager/features/backend_details/widgets/alert_dialog_android.dart';
+import 'package:adb_server_manager/features/backend_details/widgets/alert_dialog_android_ios.dart';
+import 'package:adb_server_manager/features/logs/bloc/logs_bloc.dart';
 import 'package:adb_server_manager/features/server_list/bloc/backend_listing_bloc.dart';
 import 'package:adb_server_manager/features/server_list/models/pm2_env_model.dart';
 import 'package:adb_server_manager/features/server_list/widgets/double_text.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -22,8 +22,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class BackendDetails extends StatefulWidget {
-  const BackendDetails({super.key, this.pM2ProcessInfo, required this.index});
-  final PM2ProcessInfo? pM2ProcessInfo;
+  const BackendDetails({super.key, required this.index});
   final int index;
 
   @override
@@ -31,15 +30,28 @@ class BackendDetails extends StatefulWidget {
 }
 
 class _BackendDetailsState extends State<BackendDetails> {
-  List dataList = [];
+  LogsBloc logsBloc = LogsBloc();
+  @override
+  void initState() {
+    AppGlobals().socket.on('pm2-log', (data) {
+      print("PM 2 LOGSSSSS");
+      if (mounted) {
+        logsBloc.add(SocketDataEvent(data));
+      }
+    });
+    AppGlobals().socket.on('pm2-log-error', (data) {
+      if (mounted) {
+        print("errororr logggsss");
+        logsBloc.add(SocketDataEvent(data));
+      }
+    });
+    super.initState();
+  }
 
   String changeTimeFormate(milliseconds) {
-    int timestamp = milliseconds; // Replace this with your actual timestamp
-
-// Create a DateTime object from the timestamp
+    int timestamp = milliseconds;
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
 
-// Format the DateTime object as a string in your desired format
     String formattedDateTime =
         DateFormat('dd-MM-yyyy HH:mm:ss').format(dateTime);
     return formattedDateTime;
@@ -50,111 +62,84 @@ class _BackendDetailsState extends State<BackendDetails> {
     return "${megabytes.toStringAsFixed(2)} MB";
   }
 
-  void showAlertDialog(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: Row(
-          children: const [Icon(Icons.delete), Text(AppStrings.delete)],
-        ),
-        content: const Text(AppStrings.deleteConfigurationFromServerWarning),
-        actions: <CupertinoDialogAction>[
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            onPressed: () {
-              context.pop();
-            },
-            child: const Text(AppStrings.no),
-          ),
-          CupertinoDialogAction(
-            isDestructiveAction: true,
-            onPressed: () {
-              context
-                  .read<BackendsControlOptionsBloc>()
-                  .add(OnClickOfDelete(name: pM2ProcessInfo?.name ?? ""));
-            },
-            child: const Text(AppStrings.yes),
-          ),
-        ],
-      ),
-    );
-  }
-
   PM2ProcessInfo? pM2ProcessInfo;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BackendsControlOptionsBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => BackendsControlOptionsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => logsBloc,
+        ),
+      ],
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: const CommonAppBar(text: AppStrings.backendDetails),
-        body: StreamBuilder(
-            stream: AppGlobals().streamSocket.getResponse(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.data != null) {
-                dataList.add(snapshot.data.toString());
-              }
-              return BlocListener<BackendsControlOptionsBloc,
-                  BackendsControlOptionsState>(
-                listener: (context, state) {
-                  if (state.startStatus.isSubmissionFailure) {
-                    CustomSnackBar.show(
-                        context: context,
-                        message: state.errorMsg ?? AppStrings.apiErrorMsg);
-                  }
-                  if (state.startStatus.isSubmissionSuccess) {
-                    context.read<BackendListingBloc>().add(InitiateListing());
-                    CustomSnackBar.show(
-                      context: context,
-                      message: state.successMsg ?? '',
-                    );
-                  }
-                  if (state.stopStatus.isSubmissionFailure) {
-                    CustomSnackBar.show(
-                        context: context,
-                        message: state.errorMsg ?? AppStrings.apiErrorMsg);
-                  }
-                  if (state.stopStatus.isSubmissionSuccess) {
-                    context.read<BackendListingBloc>().add(InitiateListing());
-                    CustomSnackBar.show(
-                      context: context,
-                      message: state.successMsg ?? '',
-                    );
-                  }
-                  if (state.restartStatus.isSubmissionFailure) {
-                    CustomSnackBar.show(
-                        context: context,
-                        message: state.errorMsg ?? AppStrings.apiErrorMsg);
-                  }
-                  if (state.restartStatus.isSubmissionSuccess) {
-                    context.read<BackendListingBloc>().add(InitiateListing());
-                    CustomSnackBar.show(
-                      context: context,
-                      message: state.successMsg ?? '',
-                    );
-                  }
-                  if (state.deleteStatus.isSubmissionFailure) {
-                    CustomSnackBar.show(
-                        context: context,
-                        message: state.errorMsg ?? AppStrings.apiErrorMsg);
-                  }
-                  if (state.deleteStatus.isSubmissionSuccess) {
-                    CustomSnackBar.show(
-                      context: context,
-                      message: state.successMsg ?? '',
-                    );
-                    context.read<BackendListingBloc>().add(InitiateListing());
+        body: BlocConsumer<BackendsControlOptionsBloc,
+            BackendsControlOptionsState>(
+          listener: (context, state) {
+            if (state.startStatus.isSubmissionFailure) {
+              CustomSnackBar.show(
+                  context: context,
+                  message: state.errorMsg ?? AppStrings.apiErrorMsg);
+            }
+            if (state.startStatus.isSubmissionSuccess) {
+              context.read<BackendListingBloc>().add(InitiateListing());
+              CustomSnackBar.show(
+                context: context,
+                message: state.successMsg ?? '',
+              );
+            }
+            if (state.stopStatus.isSubmissionFailure) {
+              CustomSnackBar.show(
+                  context: context,
+                  message: state.errorMsg ?? AppStrings.apiErrorMsg);
+            }
+            if (state.stopStatus.isSubmissionSuccess) {
+              context.read<BackendListingBloc>().add(InitiateListing());
+              CustomSnackBar.show(
+                context: context,
+                message: state.successMsg ?? '',
+              );
+            }
+            if (state.restartStatus.isSubmissionFailure) {
+              CustomSnackBar.show(
+                  context: context,
+                  message: state.errorMsg ?? AppStrings.apiErrorMsg);
+            }
+            if (state.restartStatus.isSubmissionSuccess) {
+              context.read<BackendListingBloc>().add(InitiateListing());
+              CustomSnackBar.show(
+                context: context,
+                message: state.successMsg ?? '',
+              );
+            }
+            if (state.deleteStatus.isSubmissionFailure) {
+              CustomSnackBar.show(
+                  context: context,
+                  message: state.errorMsg ?? AppStrings.apiErrorMsg);
+            }
+            if (state.deleteStatus.isSubmissionSuccess) {
+              CustomSnackBar.show(
+                context: context,
+                message: state.successMsg ?? '',
+              );
+              context.read<BackendListingBloc>().add(InitiateListing());
 
-                    context.pop();
-                  }
-                },
-                child: BlocBuilder<BackendListingBloc, BackendListingState>(
+              context.pop();
+            }
+          },
+          builder: (context, state) {
+            return BlocBuilder<LogsBloc, LogsState>(
+              builder: (context, logsState) {
+                return BlocBuilder<BackendListingBloc, BackendListingState>(
                   builder: (listingContext, listingState) {
                     return BlocBuilder<BackendsControlOptionsBloc,
                         BackendsControlOptionsState>(builder: (context, state) {
                       pM2ProcessInfo =
                           listingState.backendsDataList[widget.index];
-
                       return listingState.formStatus.isSubmissionInProgress
                           ? const Center(
                               child: CircularProgressIndicator.adaptive())
@@ -307,39 +292,35 @@ class _BackendDetailsState extends State<BackendDetails> {
                                                 //                 .adaptive(),
                                                 //       )
                                                 //     :
-                                                snapshot.hasError
-                                                    ? Text(
-                                                        "Error: ${snapshot.error}")
-                                                    : dataList.isEmpty
-                                                        ? const Center(
-                                                            child: GoogleText(
-                                                                text:
-                                                                    "No logs available"),
-                                                          )
-                                                        : ListView.builder(
-                                                            itemCount:
-                                                                dataList.length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              return Container(
-                                                                child: Text(
-                                                                  dataList[
-                                                                      index],
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color: AppColors
-                                                                        .decorationColor,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
-                                                          )),
+                                                logsState.logDataList.isEmpty
+                                                    ? const Center(
+                                                        child: GoogleText(
+                                                            text:
+                                                                "No logs available"),
+                                                      )
+                                                    : ListView.builder(
+                                                        itemCount: logsState
+                                                            .logDataList.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return Container(
+                                                            child: Text(
+                                                              logsState
+                                                                      .logDataList[
+                                                                  index],
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: AppColors
+                                                                    .decorationColor,
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      )),
                                       ),
                                     ],
                                   ),
@@ -355,9 +336,11 @@ class _BackendDetailsState extends State<BackendDetails> {
                                 );
                     });
                   },
-                ),
-              );
-            }),
+                );
+              },
+            );
+          },
+        ),
         bottomNavigationBar: SafeArea(
           child: BlocBuilder<BackendListingBloc, BackendListingState>(
             builder: (listingContext, listingState) {
@@ -389,7 +372,9 @@ class _BackendDetailsState extends State<BackendDetails> {
                               text: AppStrings.delete,
                               onTap: () {
                                 if (Platform.isIOS) {
-                                  showAlertDialog(context);
+                                  showAlertDialog(
+                                      context: context,
+                                      name: pM2ProcessInfo?.name ?? "");
                                 } else {
                                   androidDialog(
                                       context: context,
