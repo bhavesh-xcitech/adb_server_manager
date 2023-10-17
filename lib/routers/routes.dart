@@ -1,6 +1,7 @@
 import 'package:adb_server_manager/features/backend_details/backend_details_screen.dart';
 import 'package:adb_server_manager/features/login/log_in_screen.dart';
 import 'package:adb_server_manager/features/server_list/backends_list_screen.dart';
+import 'package:adb_server_manager/features/splash_screen/splash_screen.dart';
 import 'package:adb_server_manager/routers/error_screen.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:go_router/go_router.dart';
 
 class AppRouter {
   final router = GoRouter(
-    initialLocation: AppRouteNames.logIn,
+    initialLocation: AppRouteNames.splash,
     debugLogDiagnostics: true,
     routes: [
       // GoRoute(
@@ -21,6 +22,14 @@ class AppRouter {
       //     ),
       //   ),
       // ),
+      GoRoute(
+        name: AppRouteNames.splash,
+        path: AppRouteNames.splash,
+        pageBuilder: (context, state) => MaterialPage(
+          key: state.pageKey,
+          child: const SplashScreen(),
+        ),
+      ),
       GoRoute(
         name: AppRouteNames.serverListing,
         path: AppRouteNames.serverListing,

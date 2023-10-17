@@ -28,8 +28,8 @@ class _BackendsListingScreenState extends State<BackendsListingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: const CommonAppBar(
-          text: AppStrings.adbMonitor, isNeedBackBtn: false),
+      appBar:
+          const CommonAppBar(text: AppStrings.adbMonitor, isNeedBackBtn: false),
       body: SafeArea(
         child: BlocListener<BackendListingBloc, BackendListingState>(
           listener: (context, state) {},
