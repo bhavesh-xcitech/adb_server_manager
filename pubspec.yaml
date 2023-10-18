@@ -93,6 +93,10 @@ flutter_native_splash:
   image: assets/images/logo.png
   color: "000000"
   android_disable_fullscreen: true
+
+  android_12:
+    image: "assets/images/splash.png"
+    color: "000000"
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

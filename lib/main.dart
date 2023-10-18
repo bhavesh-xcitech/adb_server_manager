@@ -28,5 +28,4 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(const MyApp()));
-  FlutterNativeSplash.remove();
 }
