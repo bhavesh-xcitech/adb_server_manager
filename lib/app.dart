@@ -2,6 +2,7 @@ import 'package:adb_server_manager/app_globle.dart';
 import 'package:adb_server_manager/features/firebase_notifications_service.dart';
 import 'package:adb_server_manager/features/notifications/bloc/notifications_bloc.dart';
 import 'package:adb_server_manager/features/server_list/bloc/backend_listing_bloc.dart';
+import 'package:adb_server_manager/features/server_logs/bloc/server_logs_bloc.dart';
 import 'package:adb_server_manager/resource/shared_pref.dart';
 import 'package:adb_server_manager/routers/routes.dart';
 import 'package:flutter/material.dart';
@@ -47,14 +48,15 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) => BackendListingBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ServerLogsBloc(),
         ),
         BlocProvider(
           create: (context) => notificationsBloc,

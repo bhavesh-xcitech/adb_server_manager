@@ -10,7 +10,7 @@ import 'package:adb_server_manager/features/backend_details/bloc/backends_contro
 import 'package:adb_server_manager/features/backend_details/widgets/alert_dialog_android_ios.dart';
 import 'package:adb_server_manager/features/logs/bloc/logs_bloc.dart';
 import 'package:adb_server_manager/features/server_list/bloc/backend_listing_bloc.dart';
-import 'package:adb_server_manager/features/server_list/models/pm2_env_model.dart';
+import 'package:adb_server_manager/features/server_list/models/pm2_processinfo_model.dart';
 import 'package:adb_server_manager/features/server_list/widgets/double_text.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';

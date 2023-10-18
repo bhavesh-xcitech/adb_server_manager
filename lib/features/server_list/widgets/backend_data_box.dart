@@ -1,6 +1,6 @@
 import 'package:adb_server_manager/common_widgets/app_gap_height.dart';
 import 'package:adb_server_manager/common_widgets/app_text.dart';
-import 'package:adb_server_manager/features/server_list/models/pm2_env_model.dart';
+import 'package:adb_server_manager/features/server_list/models/pm2_processinfo_model.dart';
 import 'package:adb_server_manager/features/server_list/widgets/double_text.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';

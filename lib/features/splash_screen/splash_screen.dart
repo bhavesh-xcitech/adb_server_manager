@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (mounted) {
       if (isLoggedIn) {
-        context.go(AppRouteNames.serverListing);
+        context.go(AppRouteNames.home);
       } else {
         context.go(AppRouteNames.logIn);
       }

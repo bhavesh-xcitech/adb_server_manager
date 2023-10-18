@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController phoneNumController = TextEditingController();
   TextEditingController otpController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final LoginBloc loginBloc = LoginBloc();
+  LoginBloc loginBloc = LoginBloc();
   @override
   void initState() {
     loginBloc.add(const GetAuthenticatedUsers());
@@ -41,8 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await context.read<OtpVerificationCubit>().loginWithPhone(
           code: otpController.text, verificationId: state.verificationId ?? "");
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Add OtpCode")));
+      CustomSnackBar.show(context: context, message: "Add OtpCode");
     }
   }
 
@@ -56,12 +55,11 @@ class _LoginScreenState extends State<LoginScreen> {
             .read<OtpVerificationCubit>()
             .getOtp(phoneNumController.text);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("This number is not allow to login")));
+        CustomSnackBar.show(
+            context: context, message: "This number is not allow to login");
       }
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Add phone number")));
+      CustomSnackBar.show(context: context, message: "Add phone number");
     }
   }
 
@@ -108,9 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocListener<NotificationsBloc, NotificationsState>(
                   listener: (context, state) {
                     if (state.firebaseFormzStatus.isSubmissionSuccess) {
-                      context.pushReplacement(AppRouteNames.serverListing);
+                      context.pushReplacement(AppRouteNames.home);
                     }
-                    // TODO: implement listener
                   },
                 ),
               ],
@@ -201,8 +198,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 .isSubmissionInProgress,
                                         onTap: () => state.getOtpFormzStatus
                                                 .isSubmissionSuccess
-                                            ? afterGetOtp(state:state,context: context)
-                                            : afterFillPhoneNum( blocState: blocState, context: context),
+                                            ? afterGetOtp(
+                                                state: state, context: context)
+                                            : afterFillPhoneNum(
+                                                blocState: blocState,
+                                                context: context),
                                         text: state.isOtpSent
                                             ? AppStrings.logIn
                                             : AppStrings.getOtp),

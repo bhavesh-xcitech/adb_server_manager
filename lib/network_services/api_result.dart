@@ -22,7 +22,9 @@ class ApiFailure<T> extends ApiResult<T> {
 Future<ApiResult> commonApiCall(Future<ApiResult<dynamic>> apiCall) async {
   try {
     return await apiCall;
-  } catch (e) {
+  } catch (e, s) {
+    print(e);
+    print(s);
     return ApiResult.failure(error: Exception('Something went wrong'));
   }
 }

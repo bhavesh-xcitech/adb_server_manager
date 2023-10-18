@@ -24,11 +24,9 @@ void main() async {
   // PushNotificationService().initialize();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(const MyApp()));
-  runApp(const MyApp());
   FlutterNativeSplash.remove();
 }

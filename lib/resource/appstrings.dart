@@ -4,6 +4,7 @@ class AppStrings {
   static const String name = 'Name';
   static const String refresh = 'Refresh';
   static const String pId = "P-Id";
+  static const String time = "Time";
   static const String upTime = "Up Time";
   static const String status = "Status";
   static const String createdAt = "Created At";

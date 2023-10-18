@@ -1,6 +1,9 @@
 import 'package:adb_server_manager/features/backend_details/backend_details_screen.dart';
+import 'package:adb_server_manager/features/home.dart';
 import 'package:adb_server_manager/features/login/log_in_screen.dart';
 import 'package:adb_server_manager/features/server_list/backends_list_screen.dart';
+import 'package:adb_server_manager/features/server_logs/server_logs_model.dart';
+import 'package:adb_server_manager/features/server_logs/server_logs_screen.dart';
 import 'package:adb_server_manager/features/splash_screen/splash_screen.dart';
 import 'package:adb_server_manager/routers/error_screen.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
@@ -30,6 +33,22 @@ class AppRouter {
           child: const SplashScreen(),
         ),
       ),
+      GoRoute(
+        name: AppRouteNames.home,
+        path: AppRouteNames.home,
+        pageBuilder: (context, state) => MaterialPage(
+          key: state.pageKey,
+          child: const HomeScreen(),
+        ),
+      ),
+      //  GoRoute(
+      //   name: AppRouteNames.serverLogs,
+      //   path: AppRouteNames.serverLogs,
+      //   pageBuilder: (context, state) => MaterialPage(
+      //     key: state.pageKey,
+      //     child:  ServersLogsScreen(),
+      //   ),
+      // ),
       GoRoute(
         name: AppRouteNames.serverListing,
         path: AppRouteNames.serverListing,
