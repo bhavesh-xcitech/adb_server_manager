@@ -2,8 +2,6 @@ import 'package:adb_server_manager/features/backend_details/backend_details_scre
 import 'package:adb_server_manager/features/home.dart';
 import 'package:adb_server_manager/features/login/log_in_screen.dart';
 import 'package:adb_server_manager/features/server_list/backends_list_screen.dart';
-import 'package:adb_server_manager/features/server_logs/server_logs_model.dart';
-import 'package:adb_server_manager/features/server_logs/server_logs_screen.dart';
 import 'package:adb_server_manager/features/splash_screen/splash_screen.dart';
 import 'package:adb_server_manager/routers/error_screen.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
@@ -63,6 +61,9 @@ class AppRouter {
         pageBuilder: (context, state) => MaterialPage(
           key: state.pageKey,
           child: BackendDetails(
+            serverName: (state.extra as Map).containsKey('name')
+                ? ((state.extra as Map)['name'] as String)
+                : null,
             index: (state.extra as Map)['index'],
           ),
         ),

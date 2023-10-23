@@ -7,7 +7,7 @@ class ServerLogsRepo {
   Future<ApiResult> getServerLogs(
       {required int page, required int limit}) async {
     ApiResult apiResult = await DioClient()
-        .get("${ApisEndPoints.serverLogs}?page=$page&limit$limit");
+        .get("${ApisEndPoints.serverLogs}?page=$page&limit=$limit");
 
     return apiResult;
   }

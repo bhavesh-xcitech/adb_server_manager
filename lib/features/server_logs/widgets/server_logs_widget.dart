@@ -30,12 +30,16 @@ class ServerLogsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ServerLogsBloc, ServerLogsState>(
       builder: (context, state) {
-        return  Container(
+        return Container(
           padding: const EdgeInsets.all(12),
           margin: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             color: AppColors.secondaryBackgroundColor,
-            border: Border.all(color: AppColors.decorationColor),
+            border: Border.all(
+              color: state.allServerLogs[index].status == "online"
+                  ? AppColors.decorationColor
+                  : Colors.red,
+            ),
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: Column(
@@ -44,30 +48,18 @@ class ServerLogsCard extends StatelessWidget {
               const GapH(3),
               GoogleText(
                 textAlign: TextAlign.end,
-                text: state.allServerLogs[index].pm2Env?.status ?? "",
-                textColor: state.allServerLogs[index].pm2Env?.status == "online"
+                text: state.allServerLogs[index].status ?? "",
+                textColor: state.allServerLogs[index].status == "online"
                     ? AppColors.decorationColor
                     : Colors.red,
-              ),
-              DoubleTextWidget(
-                text1: "index",
-                text2: (index + 1).toString() ?? "",
               ),
               DoubleTextWidget(
                 text1: AppStrings.name,
                 text2: state.allServerLogs[index].name ?? "",
               ),
               DoubleTextWidget(
-                text1: AppStrings.time,
-                text2: convertDateTime(
-                            state.allServerLogs[index].timestamp?.seconds)
-                        .toString() ??
-                    "",
-              ),
-              // DoubleTextWidget(
-              //     text1: AppStrings.status,
-
-              //     text2: state.allServerLogs[index].pm2Env?.status ?? "" ,),
+                  text1: AppStrings.time,
+                  text2: state.allServerLogs[index].createdAt.toString()),
             ],
           ),
         );

@@ -4,6 +4,7 @@ part of 'login_bloc.dart';
 class LoginState extends Equatable {
   final FormzStatus getOtpFormzStatus;
   final FormzStatus loginFormzStatus;
+  final FormzStatus addUserFormzStatus;
   final FormzStatus loadUsersFormStatus;
   final List<String> validPhoneNumbers;
   final bool isOtpSent;
@@ -11,11 +12,14 @@ class LoginState extends Equatable {
   final String? msg;
   final String? uid;
   final String? phone;
+  final String? token;
 
   const LoginState({
+    this.token,
     this.getOtpFormzStatus = FormzStatus.pure,
     this.loginFormzStatus = FormzStatus.pure,
     this.loadUsersFormStatus = FormzStatus.pure,
+    this.addUserFormzStatus = FormzStatus.pure,
     this.isOtpSent = false,
     this.verificationId,
     this.validPhoneNumbers = const [],
@@ -34,25 +38,30 @@ class LoginState extends Equatable {
         phone,
         uid,
         loadUsersFormStatus,
-        validPhoneNumbers
+        validPhoneNumbers,
+        addUserFormzStatus,
+        token
       ];
 
-  LoginState copyWith({
-    FormzStatus? getOtpFormzStatus,
-    FormzStatus? loginFormzStatus,
-    FormzStatus? loadUsersFormStatus,
-    List<String>? validPhoneNumbers,
-    bool? isOtpSent,
-    String? verificationId,
-    String? msg,
-    String? uid,
-    String? phone,
-  }) {
+  LoginState copyWith(
+      {FormzStatus? getOtpFormzStatus,
+      FormzStatus? loginFormzStatus,
+      FormzStatus? loadUsersFormStatus,
+      FormzStatus? addUserFormzStatus,
+      List<String>? validPhoneNumbers,
+      bool? isOtpSent,
+      String? verificationId,
+      String? msg,
+      String? uid,
+      String? phone,
+      String? token}) {
     return LoginState(
+      token: token ?? this.token,
       validPhoneNumbers: validPhoneNumbers ?? this.validPhoneNumbers,
       loadUsersFormStatus: loadUsersFormStatus ?? FormzStatus.pure,
       getOtpFormzStatus: getOtpFormzStatus ?? FormzStatus.pure,
       loginFormzStatus: loginFormzStatus ?? FormzStatus.pure,
+      addUserFormzStatus: addUserFormzStatus ?? FormzStatus.pure,
       isOtpSent: isOtpSent ?? this.isOtpSent,
       verificationId: verificationId ?? this.verificationId,
       msg: msg ?? this.msg,

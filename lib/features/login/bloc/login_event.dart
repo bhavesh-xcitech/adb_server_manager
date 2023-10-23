@@ -24,3 +24,26 @@ class Login extends LoginEvent {
 class GetAuthenticatedUsers extends LoginEvent {
   const GetAuthenticatedUsers();
 }
+
+class AddUserInfo extends LoginEvent {
+  final String? phone;
+  final String? uid;
+  const AddUserInfo({
+    this.phone,
+    this.uid,
+  });
+}
+
+class UpdateWhileRefresh extends LoginEvent {
+  final String? token;
+  const UpdateWhileRefresh({
+    this.token,
+  });
+}
+
+class GetToken extends LoginEvent {
+  final String? token;
+  const GetToken({
+    this.token,
+  });
+}

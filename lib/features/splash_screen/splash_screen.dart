@@ -2,7 +2,6 @@ import 'package:adb_server_manager/resource/app_images.dart';
 import 'package:adb_server_manager/resource/shared_pref.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,7 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     redirect();
-    FlutterNativeSplash.remove();
+    //  context.push(AppRouteNames.home);
+    // FlutterNativeSplash.remove();
     super.initState();
   }
 

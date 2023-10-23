@@ -25,47 +25,35 @@ class BackendListRepo {
         data = jsonDecode(data);
       }
       if (response.statusCode == 200) {
-        final responseData = data["data"];
         // Process responseData here
 
         return ApiResult.success(
           data: data['data'],
           message: data['message'],
         );
-      } else {
-        // Handle non-200 status codes here
-
-      }
-    } catch (e, s) {
+      } else {}
+    } catch (e) {
       // Handle network errors or Dio exceptions here
-
     }
   }
 
-  Future<ApiResult> getAllEvsOfCustomer() async {
-
+  Future<ApiResult> getBackendList() async {
     ApiResult apiResult = await DioClient().get(
       ApisEndPoints.backendListing,
     );
-
-
-
     return apiResult;
   }
 
   Future<RepoResult> allBackendList() async {
     try {
-
-      final response = await commonApiCall(getAllEvsOfCustomer());
+      final response = await commonApiCall(getBackendList());
       if (response is ApiSuccess) {
         return RepoResult.success(
             data: response.data, message: response.message);
       } else {
-       
         return RepoResult.failure(error: (response as ApiFailure).error);
       }
-    } catch (e, s) {
-      
+    } catch (e) {
       return RepoResult.failure(error: e.toString());
     }
   }

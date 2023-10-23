@@ -74,7 +74,6 @@ class OtpVerificationCubit extends Cubit<LoginState> {
           uid: userCredential.user?.uid,
           loginFormzStatus: FormzStatus.submissionSuccess,
         ));
-        await SharedPref.setLoggedIn(true);
       } else {
         emit(state.copyWith(
           loginFormzStatus: FormzStatus.submissionFailure,

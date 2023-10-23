@@ -11,7 +11,7 @@ class AppGlobals {
   AppGlobals._internal();
   io.Socket socket = io.io(dotenv.env['SOCKET_URL'] ?? '', <String, dynamic>{
     'transports': ['websocket'], // Use WebSocket transport
+    'force new connection': true,
   });
-
   // Add properties to store your global data
 }

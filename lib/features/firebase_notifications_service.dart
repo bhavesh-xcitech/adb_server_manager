@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:adb_server_manager/features/notifications/bloc/notifications_bloc.dart';
+import 'package:adb_server_manager/features/login/bloc/login_bloc.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +13,7 @@ import 'package:go_router/go_router.dart';
 
 class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   //initialising firebase message plugin
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
@@ -62,7 +62,7 @@ class PushNotificationService {
   void requestNotificationPermission() async {
 // Request notification permissions
 
-    NotificationSettings settings = await messaging.requestPermission(
+    NotificationSettings settings = await _fcm.requestPermission(
       alert: true,
       announcement: true,
       badge: true,
@@ -134,19 +134,19 @@ class PushNotificationService {
   }
 
   //function to get device token on which we will send the notifications
-  Future<String?> getToken(NotificationsBloc notificationsBloc) async {
+  Future<String?> getToken(LoginBloc loginBloc) async {
     String? token = await _fcm.getToken();
-    notificationsBloc.add(GetToken(token: token));
+    loginBloc.add(GetToken(token: token));
     print('Token: $token');
 
     return token;
   }
 
-  void isTokenRefresh(NotificationsBloc notificationsBloc) async {
-    messaging.onTokenRefresh.listen((event) {
+  void isTokenRefresh(LoginBloc loginBloc) async {
+    _fcm.onTokenRefresh.listen((event) {
       event.toString();
       if (kDebugMode) {
-        notificationsBloc.add(UpdateWhileRefresh(token: event));
+        // notificationsBloc.add(UpdateWhileRefresh(token: event));
         print('refresh');
       }
     });

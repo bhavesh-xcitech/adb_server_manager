@@ -4,37 +4,34 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class UserData extends Equatable {
-  final String? PhoneNum;
+  final String? phone;
   final String? token;
-  const UserData({
-    this.PhoneNum,
-    this.token,
-  });
+  final String? id;
+  const UserData({this.phone, this.token, this.id});
 
   @override
-  List<Object?> get props => [PhoneNum, token];
+  List<Object?> get props => [phone, token, id];
 
-  UserData copyWith({
-    String? PhoneNum,
-    String? token,
-  }) {
+  UserData copyWith({String? phone, String? token, final String? id}) {
     return UserData(
-      PhoneNum: PhoneNum ?? this.PhoneNum,
+      id: id ?? this.id,
+      phone: phone ?? this.phone,
       token: token ?? this.token,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'PhoneNum': PhoneNum,
+      'phone': phone,
       'token': token,
     };
   }
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
-      PhoneNum: map['PhoneNum'] != null ? map['PhoneNum'] as String : null,
+      phone: map['phone'] != null ? map['phone'] as String : null,
       token: map['token'] != null ? map['token'] as String : null,
+      id: map['id'] != null ? map['id'] as String : null,
     );
   }
 

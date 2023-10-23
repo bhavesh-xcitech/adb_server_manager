@@ -49,29 +49,37 @@ class _ServersLogsScreenState extends State<ServersLogsScreen> {
                     child: CircularProgressIndicator.adaptive(),
                   )
                 : state.initialStatus.isSubmissionSuccess
-                    ? SafeArea(
-                        child: ListView.builder(
-                          itemCount: state.allServerLogs.length + 1,
-                          controller: scrollController,
-                          itemBuilder: (context, index) {
-                            if (index < state.allServerLogs.length) {
-                              return ServerLogsCard(index: index);
-                            } else {
-                              if (state
-                                  .listLoadingStatus.isSubmissionInProgress) {
-                                return const Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Center(
-                                      child:
-                                          CircularProgressIndicator.adaptive()),
-                                );
-                              } else {
-                                return null;
-                              }
-                            }
-                          },
-                        ),
-                      )
+                    ? state.allServerLogs.isNotEmpty
+                        ? SafeArea(
+                            child: ListView.builder(
+                              itemCount: state.allServerLogs.length + 1,
+                              controller: scrollController,
+                              itemBuilder: (context, index) {
+                                if (index < state.allServerLogs.length) {
+                                  return ServerLogsCard(index: index);
+                                } else {
+                                  if (state.listLoadingStatus
+                                      .isSubmissionInProgress) {
+                                    return const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Center(
+                                          child: CircularProgressIndicator
+                                              .adaptive()),
+                                    );
+                                  } else {
+                                    return null;
+                                  }
+                                }
+                              },
+                            ),
+                          )
+                        : const Center(
+                            child: GoogleText(
+                              text: AppStrings.yourListIsEmpty,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          )
                     : Center(
                         child: GoogleText(
                           text: state.msg ?? AppStrings.apiErrorMsg,

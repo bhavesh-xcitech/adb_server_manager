@@ -1,77 +1,76 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-
 import 'package:equatable/equatable.dart';
 
-import 'package:adb_server_manager/features/server_list/models/pm2_env_model.dart';
-import 'package:adb_server_manager/features/server_list/models/pm2_processinfo_model.dart';
-
 class ServerLogs extends Equatable {
-  final Pm2Env? pm2Env;
+  final String? id;
   final String? name;
-  final Monitoring? monit;
-  final int? pid;
-  final TimeStamp? timestamp;
+  final String? type;
+  final String? ip;
+  final String? status;
+  final bool? connections;
+  final String? connectionResponse;
+  final String? createdAt;
   const ServerLogs({
-    this.pm2Env,
+    this.id,
     this.name,
-    this.monit,
-    this.pid,
-    this.timestamp,
+    this.type,
+    this.ip,
+    this.status,
+    this.connections,
+    this.connectionResponse,
+    this.createdAt,
   });
 
-  @override
-  // TODO: implement props
-  List<Object?> get props {
-    return [
-      pm2Env,
-      name,
-      monit,
-      pid,
-      timestamp,
-    ];
-  }
-
   ServerLogs copyWith({
-    Pm2Env? pm2Env,
+    String? id,
     String? name,
-    Monitoring? monit,
-    int? pid,
-    TimeStamp? timestamp,
+    String? type,
+    String? ip,
+    String? status,
+    bool? connections,
+    String? connectionResponse,
+    String? createdAt,
   }) {
     return ServerLogs(
-      pm2Env: pm2Env ?? this.pm2Env,
+      id: id ?? this.id,
       name: name ?? this.name,
-      monit: monit ?? this.monit,
-      pid: pid ?? this.pid,
-      timestamp: timestamp ?? this.timestamp,
+      type: type ?? this.type,
+      ip: ip ?? this.ip,
+      status: status ?? this.status,
+      connections: connections ?? this.connections,
+      connectionResponse: connectionResponse ?? this.connectionResponse,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'pm2_env': pm2Env?.toMap(),
+      'id': id,
       'name': name,
-      'monit': monit?.toMap(),
-      'pid': pid,
-      'timestamp': timestamp,
+      'type': type,
+      'ip': ip,
+      'status': status,
+      'connections': connections,
+      'connection_response': connectionResponse,
+      'created_at': createdAt,
     };
   }
 
   factory ServerLogs.fromMap(Map<String, dynamic> map) {
     return ServerLogs(
-      pm2Env: map['pm2_env'] != null
-          ? Pm2Env.fromMap(map['pm2_env'] as Map<String, dynamic>)
-          : null,
+      id: map['id'] != null ? map['id'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
-      monit: map['monit'] != null
-          ? Monitoring.fromMap(map['monit'] as Map<String, dynamic>)
+      type: map['type'] != null ? map['type'] as String : null,
+      ip: map['ip'] != null ? map['ip'] as String : null,
+      status: map['status'] != null ? map['status'] as String : null,
+      connections:
+          map['connections'] != null ? map['connections'] as bool : null,
+      connectionResponse: map['connection_response'] != null
+          ? map['connection_response'] as String
           : null,
-      pid: map['pid'] != null ? map['pid'] as int : null,
-     timestamp: map['timestamp'] != null
-          ? TimeStamp.fromMap(map['timestamp'] as Map<String, dynamic>)
-          : null,
+      createdAt: map['created_at'] != null ? map['created_at'] as String : null,
     );
   }
 
@@ -82,46 +81,18 @@ class ServerLogs extends Equatable {
 
   @override
   bool get stringify => true;
-}
-
-class TimeStamp extends Equatable {
-  final int? seconds;
-  final int? nanoseconds;
-  const TimeStamp({
-    this.seconds,
-    this.nanoseconds,
-  });
-
-  TimeStamp copyWith({
-    int? seconds,
-    int? nanoseconds,
-  }) {
-    return TimeStamp(
-      seconds: seconds ?? this.seconds,
-      nanoseconds: nanoseconds ?? this.nanoseconds,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'seconds': seconds,
-      'nanoseconds': nanoseconds,
-    };
-  }
-
-  factory TimeStamp.fromMap(Map<String, dynamic> map) {
-    return TimeStamp(
-      seconds: map['seconds'] != null ? map['seconds'] as int : null,
-      nanoseconds: map['nanoseconds'] != null ? map['nanoseconds'] as int : null,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory TimeStamp.fromJson(String source) => TimeStamp.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  
 
   @override
-  List<Object?> get props => [seconds, nanoseconds];
+  List<Object?> get props {
+    return [
+      id,
+      name,
+      type,
+      ip,
+      status,
+      connections,
+      connectionResponse,
+      createdAt,
+    ];
+  }
 }

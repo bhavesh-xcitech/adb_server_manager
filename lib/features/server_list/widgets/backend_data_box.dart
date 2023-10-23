@@ -37,6 +37,7 @@ class BackendDataBox extends StatelessWidget {
       onTap: () {
         context.push(AppRouteNames.backendDetails, extra: {
           'index': index ?? 0,
+          "name": pm2Data?.name
         });
       },
       child: Container(
