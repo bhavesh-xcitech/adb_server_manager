@@ -57,8 +57,11 @@ class _AllLogsScreenState extends State<AllLogsScreen>
           isLoading = false;
           setState(() {});
         }
-        _scrollController
-            .jumpTo(_scrollController.position.maxScrollExtent + 60);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          // Call jumpToPosition after the widget has been fully built.
+          _scrollController
+              .jumpTo(_scrollController.position.maxScrollExtent + 60);
+        });
       }
     });
     super.initState();
@@ -71,6 +74,7 @@ class _AllLogsScreenState extends State<AllLogsScreen>
     socket.off('connect');
     socket.off('pm2-log');
     socket.off('pm2-log-error');
+    _scrollController.dispose();
     super.dispose();
   }
 

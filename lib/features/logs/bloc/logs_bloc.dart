@@ -21,9 +21,10 @@ class LogsBloc extends Bloc<LogsEvent, LogsState> {
       emit(state.copyWith(logDataList: []));
     });
     on<ClearAllLogs>((event, emit) {
-      state.allLogDataList.clear();
-
-      emit(state.copyWith(allLogDataList: []));
+      if (state.allLogDataList.isNotEmpty) {
+        state.allLogDataList.clear();
+        emit(state.copyWith(allLogDataList: []));
+      }
     });
 
     on<GetAllLogs>((event, emit) {
