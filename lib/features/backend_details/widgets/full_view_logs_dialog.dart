@@ -4,7 +4,8 @@ import 'package:adb_server_manager/resource/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void showFullLogsView({required BuildContext ctx}) {
+void showFullLogsView(
+    {required BuildContext ctx, required ScrollController controller}) {
   showDialog(
     context: ctx,
     builder: (BuildContext context) {
@@ -45,15 +46,14 @@ void showFullLogsView({required BuildContext ctx}) {
                     ),
                     Expanded(
                         child: ListView.builder(
+                      controller: controller,
                       // reverse: true,
                       itemCount: logsState.logDataList.length,
                       itemBuilder: (context, index) {
-                        final reversedIndex =
-                            logsState.logDataList.length - 1 - index;
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Text(
-                            logsState.logDataList[reversedIndex],
+                            logsState.logDataList[index],
                             style: const TextStyle(
                               color: AppColors.decorationColor,
                               fontSize: 14,
@@ -72,4 +72,12 @@ void showFullLogsView({required BuildContext ctx}) {
       });
     },
   );
+  Future.delayed(const Duration(milliseconds: 100), () {
+    controller.animateTo(
+      controller.position.maxScrollExtent,
+      duration:
+          const Duration(milliseconds: 500), // Adjust the duration as needed
+      curve: Curves.easeInOut,
+    );
+  });
 }

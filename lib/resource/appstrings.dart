@@ -2,6 +2,8 @@ class AppStrings {
   static const String serverListing = 'Backends List';
   static const String backendDetails = 'Backend Details';
   static const String name = 'Name';
+  static const String mongodb = 'mongodb';
+  static const String redis = 'redis';
   static const String refresh = 'Refresh';
   static const String pId = "P-Id";
   static const String time = "Time";

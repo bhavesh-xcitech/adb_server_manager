@@ -10,6 +10,7 @@ import 'package:adb_server_manager/resource/app_images.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
@@ -180,6 +181,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 const GapH(10),
                                 AppBorderTextFormField(
+                                  textInputFormatter: [
+                                    FilteringTextInputFormatter
+                                        .digitsOnly, // Allow only digits (0-9)
+                                    LengthLimitingTextInputFormatter(
+                                        10), // Limit the length to 5 characters
+                                  ],
                                   textInputType: TextInputType.number,
                                   validator: (String? value) {
                                     if (value == null || value.trim() == '') {

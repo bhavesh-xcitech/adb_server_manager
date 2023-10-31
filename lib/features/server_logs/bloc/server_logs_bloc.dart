@@ -1,4 +1,4 @@
-import 'package:adb_server_manager/features/server_logs/server_logs_model.dart';
+import 'package:adb_server_manager/features/server_logs/models/server_logs_model.dart';
 import 'package:adb_server_manager/features/server_logs/serverlogs_repo.dart';
 import 'package:adb_server_manager/network_services/api_result_service.dart';
 import 'package:bloc/bloc.dart';

@@ -57,6 +57,18 @@ class ServerLogsCard extends StatelessWidget {
                 text1: AppStrings.name,
                 text2: state.allServerLogs[index].name ?? "",
               ),
+              // DoubleTextWidget(
+              //   text1: AppStrings.mongodb,
+              //   text2: state.allServerLogs[index].connectionResponse?.mongodb
+              //           .toString() ??
+              //       "",
+              // ),
+              //  DoubleTextWidget(
+              //   text1: AppStrings.redis,
+              //   text2: state.allServerLogs[index].connectionResponse?.redis
+              //           .toString() ??
+              //       "",
+              // ),
               DoubleTextWidget(
                   text1: AppStrings.time,
                   text2: state.allServerLogs[index].createdAt.toString()),

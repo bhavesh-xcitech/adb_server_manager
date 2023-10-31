@@ -36,9 +36,8 @@ class ApiInterceptors {
             message: data['message'],
           );
         } else {
-
-
-          response.data = ApiResult.failure(error: data['error']);
+          response.data =
+              ApiResult.failure(error: data['error'] ?? data['message']);
         }
 
         return handler.next(response);

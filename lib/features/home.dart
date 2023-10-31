@@ -39,10 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: listOfScreen[selectedIndex],
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 25) +
+          padding: const EdgeInsets.symmetric(vertical: 5.0,) +
               const EdgeInsets.only(bottom: 5),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Expanded(
                 child: BottomNavButton(
@@ -87,6 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+   
+   
     );
   }
 }

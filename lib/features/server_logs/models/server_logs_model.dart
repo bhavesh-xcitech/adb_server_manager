@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:adb_server_manager/features/server_logs/models/connection_response.dart';
 import 'package:equatable/equatable.dart';
 
 class ServerLogs extends Equatable {
@@ -10,7 +11,7 @@ class ServerLogs extends Equatable {
   final String? ip;
   final String? status;
   final bool? connections;
-  final String? connectionResponse;
+  // final ConnectionResponse? connectionResponse;
   final String? createdAt;
   const ServerLogs({
     this.id,
@@ -19,7 +20,7 @@ class ServerLogs extends Equatable {
     this.ip,
     this.status,
     this.connections,
-    this.connectionResponse,
+    // this.connectionResponse,
     this.createdAt,
   });
 
@@ -30,7 +31,7 @@ class ServerLogs extends Equatable {
     String? ip,
     String? status,
     bool? connections,
-    String? connectionResponse,
+    // ConnectionResponse? connectionResponse,
     String? createdAt,
   }) {
     return ServerLogs(
@@ -40,7 +41,7 @@ class ServerLogs extends Equatable {
       ip: ip ?? this.ip,
       status: status ?? this.status,
       connections: connections ?? this.connections,
-      connectionResponse: connectionResponse ?? this.connectionResponse,
+      // connectionResponse: connectionResponse ?? this.connectionResponse,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -53,7 +54,7 @@ class ServerLogs extends Equatable {
       'ip': ip,
       'status': status,
       'connections': connections,
-      'connection_response': connectionResponse,
+      // 'connectionResponse': connectionResponse?.toMap(),
       'created_at': createdAt,
     };
   }
@@ -67,9 +68,10 @@ class ServerLogs extends Equatable {
       status: map['status'] != null ? map['status'] as String : null,
       connections:
           map['connections'] != null ? map['connections'] as bool : null,
-      connectionResponse: map['connection_response'] != null
-          ? map['connection_response'] as String
-          : null,
+      // connectionResponse: map['connectionResponse'] != null
+      //     ? ConnectionResponse.fromMap(
+      //         map['connectionResponse'] as Map<String, dynamic>)
+      //     : null,
       createdAt: map['created_at'] != null ? map['created_at'] as String : null,
     );
   }
@@ -91,7 +93,7 @@ class ServerLogs extends Equatable {
       ip,
       status,
       connections,
-      connectionResponse,
+      // connectionResponse,
       createdAt,
     ];
   }

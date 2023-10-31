@@ -57,10 +57,15 @@ class _AllLogsScreenState extends State<AllLogsScreen>
           isLoading = false;
           setState(() {});
         }
+
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          // Call jumpToPosition after the widget has been fully built.
-          _scrollController
-              .jumpTo(_scrollController.position.maxScrollExtent + 60);
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(
+                milliseconds:
+                    500), // Adjust the duration as needed if all data not covered
+            curve: Curves.easeInOut,
+          );
         });
       }
     });

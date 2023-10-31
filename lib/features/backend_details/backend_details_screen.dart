@@ -34,10 +34,12 @@ class BackendDetails extends StatefulWidget {
 
 class _BackendDetailsState extends State<BackendDetails> {
   final ScrollController _scrollController = ScrollController();
+  final ScrollController sheetScrollController = ScrollController();
 
   LogsBloc logsBloc = LogsBloc();
   late Socket socket;
   String dynamicEventName = "";
+  bool isDialogOpened = false;
 
   @override
   void initState() {
@@ -56,8 +58,23 @@ class _BackendDetailsState extends State<BackendDetails> {
     socket.on("pm2-log-${widget.serverName}", (data) {
       if (mounted) {
         context.read<LogsBloc>().add(SocketDataEvent(data));
-        _scrollController
-            .jumpTo(_scrollController.position.maxScrollExtent + 20);
+
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent + 60,
+            duration: const Duration(
+                milliseconds: 500), // Adjust the duration as needed
+            curve: Curves.easeInOut,
+          );
+          if (isDialogOpened) {
+            sheetScrollController.animateTo(
+              sheetScrollController.position.maxScrollExtent + 60,
+              duration: const Duration(
+                  milliseconds: 500), // Adjust the duration as needed
+              curve: Curves.easeInOut,
+            );
+          }
+        });
       }
     });
 
@@ -311,7 +328,12 @@ class _BackendDetailsState extends State<BackendDetails> {
                                             onTap: () {
                                               if (logsState
                                                   .logDataList.isNotEmpty) {
-                                                showFullLogsView(ctx: ctx);
+                                                showFullLogsView(
+                                                    ctx: ctx,
+                                                    controller:
+                                                        sheetScrollController);
+                                                isDialogOpened = true;
+                                                setState(() {});
                                               }
                                             },
                                             child: Container(
