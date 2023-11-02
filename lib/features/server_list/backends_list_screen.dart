@@ -4,6 +4,7 @@ import 'package:adb_server_manager/features/server_list/widgets/backend_data_box
 import 'package:adb_server_manager/resource/appstrings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:formz/formz.dart';
 
 class BackendsListingScreen extends StatefulWidget {
@@ -16,6 +17,8 @@ class BackendsListingScreen extends StatefulWidget {
 }
 
 class _BackendsListingScreenState extends State<BackendsListingScreen> {
+  bool animate = true;
+
   @override
   void initState() {
     context.read<BackendListingBloc>().add(InitiateListing());
@@ -50,13 +53,27 @@ class _BackendsListingScreenState extends State<BackendsListingScreen> {
                                     .read<BackendListingBloc>()
                                     .add(InitiateListing());
                               },
-                              child: ListView.builder(
-                                itemCount: state.backendsDataList.length,
-                                itemBuilder: (context, index) {
-                                  return BackendDataBox(
-                                      index: index,
-                                      pm2Data: state.backendsDataList[index]);
-                                },
+                              child: AnimationLimiter(
+                                child: ListView.builder(
+                                  itemCount: state.backendsDataList.length,
+                                  itemBuilder: (context, index) {
+                                    return AnimationConfiguration.staggeredList(
+                                      duration: const Duration(seconds: 1),
+                                      position: index,
+                                      child: SlideAnimation(
+                                        verticalOffset: 100.0,
+                                        horizontalOffset: 100,
+                                        child: FlipAnimation(
+                                          child: BackendDataBox(
+                                              animate: animate,
+                                              index: index,
+                                              pm2Data: state
+                                                  .backendsDataList[index]),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ))
                     : Center(

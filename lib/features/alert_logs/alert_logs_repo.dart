@@ -3,7 +3,7 @@ import 'package:adb_server_manager/network_services/api_result.dart';
 import 'package:adb_server_manager/network_services/api_result_service.dart';
 import 'package:adb_server_manager/resource/api_endpoints.dart';
 
-class ServerLogsRepo {
+class AlertLogsRepo {
   Future<ApiResult> getServerLogs(
       {required int page, required int limit}) async {
     ApiResult apiResult = await DioClient()

@@ -1,28 +1,27 @@
-import 'package:adb_server_manager/features/server_logs/models/server_logs_model.dart';
-import 'package:adb_server_manager/features/server_logs/serverlogs_repo.dart';
+import 'package:adb_server_manager/features/alert_logs/alert_logs_repo.dart';
+import 'package:adb_server_manager/features/alert_logs/models/server_logs_model.dart';
 import 'package:adb_server_manager/network_services/api_result_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
-part 'server_logs_event.dart';
-part 'server_logs_state.dart';
+part 'alerts_logs_event.dart';
+part 'alerts_logs_state.dart';
 
-class ServerLogsBloc extends Bloc<ServerLogsEvent, ServerLogsState> {
-  ServerLogsBloc() : super(const ServerLogsState()) {
-    ServerLogsRepo serverLogsRepo = ServerLogsRepo();
-
+class AlertsLogsBloc extends Bloc<AlertsLogsEvent, AlertsLogsState> {
+  AlertsLogsBloc() : super(const AlertsLogsState()) {
+    AlertLogsRepo alertLogsRepo = AlertLogsRepo();
     on<GetServerLogs>((event, emit) async {
       try {
         emit(state.copyWith(initialStatus: FormzStatus.submissionInProgress));
 
-        RepoResult? response = await serverLogsRepo.serverLogs(
+        RepoResult? response = await alertLogsRepo.serverLogs(
             page: state.page ?? 1, limit: state.limit ?? 10);
 
         if (response is RepoSuccess) {
-          List<ServerLogs> responseList =
+          List<AlertLogs> responseList =
               (response.data as List<dynamic>).map((item) {
-            return ServerLogs.fromMap(item as Map<String, dynamic>);
+            return AlertLogs.fromMap(item as Map<String, dynamic>);
           }).toList();
 
           emit(
@@ -56,13 +55,13 @@ class ServerLogsBloc extends Bloc<ServerLogsEvent, ServerLogsState> {
         // Dispatched when user wants to load more data
         final currentLogs = state.allServerLogs;
         final nextPage = (state.page ?? 1) + 1;
-        RepoResult? response = await serverLogsRepo.serverLogs(
+        RepoResult? response = await alertLogsRepo.serverLogs(
             page: nextPage, limit: state.limit ?? 10);
 
         if (response is RepoSuccess) {
-          List<ServerLogs> nextLogs =
+          List<AlertLogs> nextLogs =
               (response.data as List<dynamic>).map((item) {
-            return ServerLogs.fromMap(item as Map<String, dynamic>);
+            return AlertLogs.fromMap(item as Map<String, dynamic>);
           }).toList();
           currentLogs.addAll(nextLogs); // Append new logs to existing ones
           emit(

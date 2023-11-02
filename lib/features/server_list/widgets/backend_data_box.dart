@@ -1,4 +1,5 @@
 import 'package:adb_server_manager/common_widgets/app_gap_height.dart';
+import 'package:adb_server_manager/common_widgets/app_gap_width.dart';
 import 'package:adb_server_manager/common_widgets/app_text.dart';
 import 'package:adb_server_manager/features/server_list/models/pm2_processinfo_model.dart';
 import 'package:adb_server_manager/features/server_list/widgets/double_text.dart';
@@ -8,19 +9,24 @@ import 'package:adb_server_manager/routers/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class BackendDataBox extends StatelessWidget {
-  const BackendDataBox({super.key, this.pm2Data, this.index});
+  const BackendDataBox({
+    super.key,
+    this.pm2Data,
+    required this.index,
+    this.animate,
+  });
 
   final PM2ProcessInfo? pm2Data;
-  final int? index;
+  final int index;
+  final bool? animate;
   String changeTimeFormate(milliseconds) {
     int timestamp = milliseconds; // Replace this with your actual timestamp
 
-// Create a DateTime object from the timestamp
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
 
-// Format the DateTime object as a string in your desired format
     String formattedDateTime =
         DateFormat('dd-MM-yyyy HH:mm:ss').format(dateTime);
     return formattedDateTime;
@@ -35,10 +41,8 @@ class BackendDataBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push(AppRouteNames.backendDetails, extra: {
-          'index': index ?? 0,
-          "name": pm2Data?.name
-        });
+        context.push(AppRouteNames.backendDetails,
+            extra: {'index': index, "name": pm2Data?.name});
       },
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -55,12 +59,30 @@ class BackendDataBox extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            GoogleText(
-              textAlign: TextAlign.end,
-              text: pm2Data?.pm2Env?.status ?? "",
-              textColor: pm2Data?.pm2Env?.status == "online"
-                  ? AppColors.decorationColor
-                  : Colors.red,
+            Row(
+              children: [
+                if (pm2Data?.pm2Env?.status == "online") ...[
+                  SizedBox(
+                      height: 20,
+                      child: Lottie.asset('assets/success.json',
+                          repeat: false, frameRate: FrameRate(40))),
+                ] else ...[
+                  SizedBox(
+                      height: 20,
+                      child: Lottie.asset(
+                        'assets/error.json',
+                        repeat: false,
+                      )),
+                ],
+                const GapW(5),
+                GoogleText(
+                  textAlign: TextAlign.end,
+                  text: pm2Data?.pm2Env?.status ?? "",
+                  textColor: pm2Data?.pm2Env?.status == "online"
+                      ? AppColors.decorationColor
+                      : Colors.red,
+                ),
+              ],
             ),
             const GapH(3),
             DoubleTextWidget(

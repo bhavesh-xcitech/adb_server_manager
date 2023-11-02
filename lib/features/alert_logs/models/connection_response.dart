@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 class ConnectionResponse {
    bool? redis;
   String? random;
-  List<String>? notes;
+  List<dynamic>? notes;
   String? app;
   bool? mongodb;
   ConnectionResponse({
@@ -20,7 +20,7 @@ class ConnectionResponse {
   ConnectionResponse copyWith({
     bool? redis,
     String? random,
-    List<String>? notes,
+    List<dynamic>? notes,
     String? app,
     bool? mongodb,
   }) {
@@ -47,7 +47,7 @@ class ConnectionResponse {
     return ConnectionResponse(
       redis: map['redis'] != null ? map['redis'] as bool : null,
       random: map['random'] != null ? map['random'] as String : null,
-      notes: map['notes'] != null ? List<String>.from((map['notes'] as List<String>)) : null,
+      notes: map['notes'] != null ? List<dynamic>.from((map['notes'] as List<dynamic>)) : null,
       app: map['app'] != null ? map['app'] as String : null,
       mongodb: map['mongodb'] != null ? map['mongodb'] as bool : null,
     );

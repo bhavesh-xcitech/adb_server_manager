@@ -1,13 +1,13 @@
 import 'package:adb_server_manager/common_widgets/app_bar.dart';
-import 'package:adb_server_manager/common_widgets/bottom_nav_button.dart';
+import 'package:adb_server_manager/common_widgets/app_text.dart';
+import 'package:adb_server_manager/features/alert_logs/alert_screen.dart';
 import 'package:adb_server_manager/features/backend_details/all_logs_screen.dart';
-import 'package:adb_server_manager/features/logs/bloc/logs_bloc.dart';
+import 'package:adb_server_manager/features/dashboard/dashboard_screen.dart';
 import 'package:adb_server_manager/features/server_list/backends_list_screen.dart';
-import 'package:adb_server_manager/features/server_logs/server_logs_screen.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,12 +22,25 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  int selectedIndex = 0;
+  int selectedIndex = 1;
 
   List listOfScreen = [
+    const DashBoardScreen(),
+    const AlertScreen(),
     const BackendsListingScreen(),
-    const ServersLogsScreen(),
     const AllLogsScreen()
+  ];
+  List iconList = [
+    Icons.dashboard,
+    Icons.warning,
+    Icons.list,
+    Icons.cloud_download_outlined,
+  ];
+  List name = [
+   "DashBoard",
+    "Alerts",
+    "listing",
+    "All-Logs",
   ];
 
   @override
@@ -37,58 +50,35 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar:
           const CommonAppBar(text: AppStrings.adbMonitor, isNeedBackBtn: false),
       body: listOfScreen[selectedIndex],
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5.0,) +
-              const EdgeInsets.only(bottom: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Expanded(
-                child: BottomNavButton(
-                  onTap: () {
-                    context.read<LogsBloc>().add(ClearAllLogs());
 
-                    selectedIndex = 0;
-                    setState(() {});
-                  },
-                  iconData: Icons.list,
-                  text: "Listing",
-                  index: 0,
-                  selectedIndex: selectedIndex,
-                ),
+      bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+        itemCount: iconList.length,
+        notchMargin: 0,
+        tabBuilder: (int index, bool isActive) {
+          return Column(
+             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                iconList[index],
+              size: isActive ? 25 : 20, 
+                color: isActive ? Colors.blue : Colors.white,
               ),
-              Expanded(
-                child: BottomNavButton(
-                  onTap: () {
-                    context.read<LogsBloc>().add(ClearAllLogs());
-                    selectedIndex = 1;
-                    setState(() {});
-                  },
-                  iconData: Icons.ballot_outlined,
-                  text: "Status Logs",
-                  index: 1,
-                  selectedIndex: selectedIndex,
-                ),
-              ),
-              Expanded(
-                child: BottomNavButton(
-                  onTap: () {
-                    selectedIndex = 2;
-                    setState(() {});
-                  },
-                  iconData: Icons.cloud_download_outlined,
-                  text: "Server Logs",
-                  index: 2,
-                  selectedIndex: selectedIndex,
-                ),
-              )
+              GoogleText(text: name[index] ,fontSize: 12,)
             ],
-          ),
-        ),
+          );
+        },
+        backgroundColor: AppColors.backgroundColor,
+        activeIndex: selectedIndex,
+        gapLocation: GapLocation.none,
+        // gapLocation: GapLocation.center,
+          notchSmoothness: NotchSmoothness.defaultEdge,
+  leftCornerRadius: 32,
+  rightCornerRadius: 32, // Adjust as needed
+   
+        onTap: (index) => setState(() => selectedIndex = index),
+        //other params
       ),
-   
-   
     );
   }
 }

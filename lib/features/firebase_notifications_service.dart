@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:adb_server_manager/features/login/bloc/login_bloc.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -92,15 +93,15 @@ class PushNotificationService {
 
   // function to show visible notification when app is active
   Future<void> showNotification(RemoteMessage message) async {
+    await AudioPlayer().play(AssetSource('notification.mp3'));
     AndroidNotificationChannel channel = const AndroidNotificationChannel(
-      // Random.secure().nextInt(10000).toString(),
       "default_notification_channel_id",
       "high_importance_channel",
       // message.notification!.android!.channelId.toString(),
       importance: Importance.max,
       showBadge: true,
       playSound: true,
-      // sound: RawResourceAndroidNotificationSound('jetsons_doorbell'),
+      // sound: RawResourceAndroidNotificationSound('my_notification'),
     );
 
     AndroidNotificationDetails androidNotificationDetails =
