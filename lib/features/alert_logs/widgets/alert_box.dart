@@ -4,6 +4,7 @@ import 'package:adb_server_manager/common_widgets/app_text.dart';
 import 'package:adb_server_manager/features/alert_logs/models/server_logs_model.dart';
 import 'package:adb_server_manager/features/server_list/widgets/double_text.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
+import 'package:adb_server_manager/resource/app_images.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -76,7 +77,7 @@ class AlertBoxWidget extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
                 const GapW(5),
-                SizedBox(height: 20, child: Lottie.asset('assets/error.json')),
+                SizedBox(height: 20, child: Lottie.asset(AppImages.errorLoti)),
               ],
             ),
             DoubleTextWidget(

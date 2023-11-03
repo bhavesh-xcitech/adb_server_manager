@@ -4,6 +4,7 @@ import 'package:adb_server_manager/common_widgets/app_text.dart';
 import 'package:adb_server_manager/features/server_list/models/pm2_processinfo_model.dart';
 import 'package:adb_server_manager/features/server_list/widgets/double_text.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
+import 'package:adb_server_manager/resource/app_images.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
 import 'package:flutter/material.dart';
@@ -46,9 +47,17 @@ class BackendDataBox extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(vertical: 5),
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
           color: AppColors.secondaryBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 0.5,
+              blurRadius: 5,
+              offset: const Offset(1, 2),
+            ),
+          ],
           border: Border.all(
               color: pm2Data?.pm2Env?.status == "online"
                   ? AppColors.decorationColor
@@ -64,14 +73,13 @@ class BackendDataBox extends StatelessWidget {
                 if (pm2Data?.pm2Env?.status == "online") ...[
                   SizedBox(
                       height: 20,
-                      child: Lottie.asset('assets/success.json',
-                          repeat: false, frameRate: FrameRate(40))),
+                      child: Lottie.asset(AppImages.successLoti,
+                          frameRate: FrameRate(40))),
                 ] else ...[
                   SizedBox(
                       height: 20,
                       child: Lottie.asset(
-                        'assets/error.json',
-                        repeat: false,
+                        AppImages.errorLoti,
                       )),
                 ],
                 const GapW(5),

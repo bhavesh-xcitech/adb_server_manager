@@ -30,8 +30,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     pushNotificationService.requestNotificationPermission();
     pushNotificationService.forgroundMessage();
-    pushNotificationService.firebaseInit(context);
-    pushNotificationService.setupInteractMessage(context);
     pushNotificationService.isTokenRefresh(loginBloc);
     pushNotificationService.getToken(loginBloc);
 

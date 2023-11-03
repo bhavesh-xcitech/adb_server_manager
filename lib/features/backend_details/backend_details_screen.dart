@@ -109,6 +109,7 @@ class _BackendDetailsState extends State<BackendDetails> {
       child: WillPopScope(
         onWillPop: () async {
           context.read<LogsBloc>().add(ClearIndividualLogs());
+          context.pop();
           return false;
         },
         child: Scaffold(

@@ -36,7 +36,12 @@ class AppRouter {
         path: AppRouteNames.home,
         pageBuilder: (context, state) => MaterialPage(
           key: state.pageKey,
-          child: const HomeScreen(),
+          child: HomeScreen(
+            selectedIndex:
+                (state.extra as Map?)?.containsKey('selectedIndex') == true
+                    ? ((state.extra as Map?)!['selectedIndex'] as int)
+                    : 0,
+          ),
         ),
       ),
       //  GoRoute(

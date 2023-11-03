@@ -54,6 +54,14 @@ class AppCommonButton extends StatelessWidget {
           color: isEnable ? color:AppColors.secondaryBackgroundColor,
           border: Border.all(color: borderColor!, width: borderWidth!),
           borderRadius: BorderRadius.circular(radius),
+          boxShadow:  [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: isLoading
             ? const SizedBox(

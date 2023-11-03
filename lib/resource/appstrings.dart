@@ -22,6 +22,7 @@ class AppStrings {
   static const String delete = "Delete";
   static const String apiErrorMsg = "Something Went Wrong";
   static const String yourListIsEmpty = "List Is Empty";
+  static const String noStatusAvailable = "No status available";
   static const String phoneNum = "Phone Number";
   static const String password = "password";
   static const String logIn = "Log-In";

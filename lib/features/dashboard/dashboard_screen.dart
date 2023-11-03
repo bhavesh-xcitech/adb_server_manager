@@ -1,9 +1,12 @@
 import 'package:adb_server_manager/common_widgets/app_gap_height.dart';
 import 'package:adb_server_manager/common_widgets/app_text.dart';
+import 'package:adb_server_manager/features/dashboard/bloc/dash_board_bloc.dart';
 import 'package:adb_server_manager/features/dashboard/widgets/detail_box.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -20,10 +23,11 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   BorderRadiusGeometry _borderRadius = BorderRadius.circular(0);
   late AnimationController _controller;
   late Animation<Offset> messageAnimation;
+  DashBoardBloc dashBoardBloc = DashBoardBloc();
 
   @override
   void initState() {
-    super.initState();
+    dashBoardBloc.add(GetDashBoardData());
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
 
@@ -40,8 +44,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         ),
       ),
     );
-
-    startAnimation();
+    super.initState();
   }
 
   void startAnimation() {
@@ -56,60 +59,100 @@ class _DashBoardScreenState extends State<DashBoardScreen>
             _borderRadius = BorderRadius.circular(15);
           });
         });
-        // setState(() {
-
-        // });
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: ListView.separated(
-        separatorBuilder: (context, index) {
-          return const GapH(20);
+    return BlocProvider(
+      create: (context) => dashBoardBloc,
+      child: BlocListener<DashBoardBloc, DashBoardState>(
+        listener: (context, state) {
+          if (state.formStatus.isSubmissionSuccess) {
+            startAnimation();
+          }
         },
-        itemCount: 2,
-        itemBuilder: (context, index) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SlideTransition(
-                position: messageAnimation,
-                child: const GoogleText(
-                  text: "server name",
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+        child: BlocBuilder<DashBoardBloc, DashBoardState>(
+          builder: (context, state) {
+            if (state.formStatus.isSubmissionInProgress) {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            } else if (state.formStatus.isSubmissionSuccess &&
+                state.dashboardList.isEmpty) {
+              return const Center(
+                child: GoogleText(
+                  text: AppStrings.noStatusAvailable,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
                 ),
-              ),
-              const GapH(10),
-              Row(
-                children: [
-                  DetailBox(
-                    title: AppStrings.mongodb,
-                    data: "2.2.2",
-                    height: _height,
-                    color: _color,
-                  ),
-                  DetailBox(
-                    title: AppStrings.redis,
-                    data: "2.2.2",
-                    height: _height,
-                    color: _color,
-                  ),
-                  DetailBox(
-                    title: "server",
-                    data: "2.2.2",
-                    height: _height,
-                    color: _color,
-                  ),
-                ],
-              )
-            ],
-          );
-        },
+              );
+            } else if (state.formStatus.isSubmissionSuccess &&
+                state.dashboardList.isNotEmpty) {
+              return Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return const GapH(20);
+                  },
+                  itemCount: 2,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SlideTransition(
+                          position: messageAnimation,
+                          child: GoogleText(
+                            text: state.dashboardList[index].name ?? "",
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const GapH(5),
+                        Row(
+                          children: [
+                            DetailBox(
+                              title: AppStrings.mongodb,
+                              data: state.dashboardList[index]
+                                      .connectionResponse?.mongodb ??
+                                  false,
+                              height: _height,
+                              color: _color,
+                            ),
+                            DetailBox(
+                              title: AppStrings.redis,
+                              data: state.dashboardList[index]
+                                      .connectionResponse?.redis ??
+                                  false,
+                              height: _height,
+                              color: _color,
+                            ),
+                            DetailBox(
+                              title: "server",
+                              data: state.dashboardList[index].server ?? false,
+                              height: _height,
+                              color: _color,
+                            ),
+                          ],
+                        )
+                      ],
+                    );
+                  },
+                ),
+              );
+            } else {
+              return Center(
+                child: GoogleText(
+                  text: state.msg ?? AppStrings.apiErrorMsg,
+                  textColor: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

@@ -170,7 +170,7 @@ class PushNotificationService {
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) {
-    context.push(AppRouteNames.backendDetails);
+    context.go(AppRouteNames.home, extra: {"selectedIndex": 1});
 
     // if(message.data['type'] =='msj'){
     //   Navigator.push(context,
