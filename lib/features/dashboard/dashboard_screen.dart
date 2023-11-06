@@ -129,7 +129,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                               color: _color,
                             ),
                             DetailBox(
-                              title: "server",
+                              title: AppStrings.server,
                               data: state.dashboardList[index].server ?? false,
                               height: _height,
                               color: _color,

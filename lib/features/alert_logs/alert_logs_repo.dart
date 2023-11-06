@@ -29,4 +29,27 @@ class AlertLogsRepo {
       return RepoResult.failure(error: e.toString());
     }
   }
+
+  Future<ApiResult> deleteAlerts() async {
+    ApiResult apiResult = await DioClient().post(ApisEndPoints.deleteLogs);
+
+    return apiResult;
+  }
+
+  Future<RepoResult> deleteAlertsLogs() async {
+    try {
+      final response = await commonApiCall(deleteAlerts());
+
+      if (response is ApiSuccess) {
+        return RepoResult.success(
+            data: response.data, message: response.message);
+      } else {
+        return RepoResult.failure(error: (response as ApiFailure).error);
+      }
+    } catch (e, s) {
+      print(e);
+      print(s);
+      return RepoResult.failure(error: e.toString());
+    }
+  }
 }

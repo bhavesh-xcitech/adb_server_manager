@@ -74,12 +74,13 @@ class BackendDataBox extends StatelessWidget {
                   SizedBox(
                       height: 20,
                       child: Lottie.asset(AppImages.successLoti,
-                          frameRate: FrameRate(40))),
+                          frameRate: FrameRate(40),repeat: false)),
                 ] else ...[
                   SizedBox(
                       height: 20,
                       child: Lottie.asset(
                         AppImages.errorLoti,
+                        repeat: false
                       )),
                 ],
                 const GapW(5),

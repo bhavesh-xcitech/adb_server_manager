@@ -4,6 +4,7 @@ part of 'alerts_logs_bloc.dart';
 class AlertsLogsState extends Equatable {
   final FormzStatus initialStatus;
   final FormzStatus listLoadingStatus;
+  final FormzStatus deleteLogsStatus;
   final List<AlertLogs> allServerLogs;
   final AlertLogs? lastLog;
   final int? page;
@@ -11,6 +12,7 @@ class AlertsLogsState extends Equatable {
   final String? msg;
   const AlertsLogsState(
       {this.allServerLogs = const [],
+      this.deleteLogsStatus = FormzStatus.pure,
       this.msg,
       this.page,
       this.limit,
@@ -26,18 +28,21 @@ class AlertsLogsState extends Equatable {
         page,
         limit,
         msg,
-        lastLog
+        lastLog,
+        deleteLogsStatus
       ];
 
   AlertsLogsState copyWith(
       {FormzStatus? initialStatus,
       FormzStatus? listLoadingStatus,
+      FormzStatus? deleteLogsStatus,
       List<AlertLogs>? allServerLogs,
       int? page,
       int? limit,
       String? msg,
       AlertLogs? lastLog}) {
     return AlertsLogsState(
+        deleteLogsStatus: deleteLogsStatus ?? FormzStatus.pure,
         msg: msg ?? this.msg,
         initialStatus: initialStatus ?? FormzStatus.pure,
         listLoadingStatus: listLoadingStatus ?? FormzStatus.pure,

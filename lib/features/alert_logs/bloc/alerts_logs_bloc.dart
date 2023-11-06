@@ -89,5 +89,34 @@ class AlertsLogsBloc extends Bloc<AlertsLogsEvent, AlertsLogsState> {
         );
       }
     });
+
+    on<DeleteServerLogs>((event, emit) async {
+      try {
+        emit(
+            state.copyWith(deleteLogsStatus: FormzStatus.submissionInProgress));
+
+        RepoResult? response = await alertLogsRepo.deleteAlertsLogs();
+        if (response is RepoSuccess) {
+          emit(
+            state.copyWith(
+                deleteLogsStatus: FormzStatus.submissionSuccess,
+                msg: response.message),
+          );
+        } else if (response is RepoFailure) {
+          emit(
+            state.copyWith(
+                deleteLogsStatus: FormzStatus.submissionFailure,
+                msg: response.error.toString()),
+          );
+        }
+      } catch (e) {
+        emit(
+          state.copyWith(deleteLogsStatus: FormzStatus.submissionFailure),
+        );
+      }
+    });
+    on<ResetPage>((event, emit) {
+      emit(state.copyWith(page: 0));
+    });
   }
 }

@@ -57,7 +57,6 @@ class _AllLogsScreenState extends State<AllLogsScreen>
           isLoading = false;
           setState(() {});
         }
-
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
@@ -99,19 +98,22 @@ class _AllLogsScreenState extends State<AllLogsScreen>
                       fontWeight: FontWeight.w800,
                     ),
                   )
-                : ListView.builder(
-                    controller: _scrollController,
-                    itemCount: state.allLogDataList.length,
-                    itemBuilder: (context, index) {
-                      return Text(
-                        state.allLogDataList[index],
-                        style: const TextStyle(
-                          color: AppColors.decorationColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      );
-                    },
+                : Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: state.allLogDataList.length,
+                      itemBuilder: (context, index) {
+                        return Text(
+                          state.allLogDataList[index],
+                          style: const TextStyle(
+                            color: AppColors.decorationColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      },
+                    ),
                   );
       },
     );

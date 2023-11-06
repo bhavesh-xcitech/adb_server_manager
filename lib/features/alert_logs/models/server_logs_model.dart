@@ -10,16 +10,16 @@ class AlertLogs extends Equatable {
   final String? type;
   final String? ip;
   final String? status;
-  final bool? connections;
+  final bool? server;
   final ConnectionResponse? connectionResponse;
-  final CreatedAt? createdAt;
+  final String? createdAt;
   const AlertLogs({
     this.id,
     this.name,
     this.type,
     this.ip,
     this.status,
-    this.connections,
+    this.server,
     this.connectionResponse,
     this.createdAt,
   });
@@ -30,9 +30,9 @@ class AlertLogs extends Equatable {
     String? type,
     String? ip,
     String? status,
-    bool? connections,
+    bool? server,
     ConnectionResponse? connectionResponse,
-    CreatedAt? createdAt,
+    String? createdAt,
   }) {
     return AlertLogs(
       id: id ?? this.id,
@@ -40,7 +40,7 @@ class AlertLogs extends Equatable {
       type: type ?? this.type,
       ip: ip ?? this.ip,
       status: status ?? this.status,
-      connections: connections ?? this.connections,
+      server: server ?? this.server,
       connectionResponse: connectionResponse ?? this.connectionResponse,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -48,33 +48,31 @@ class AlertLogs extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      '_id': id,
       'name': name,
       'type': type,
       'ip': ip,
       'status': status,
-      'connections': connections,
+      'server': server,
       'connection_response': connectionResponse?.toMap(),
-      'created_at': createdAt?.toMap(),
+      'created_at': createdAt,
     };
   }
 
   factory AlertLogs.fromMap(Map<String, dynamic> map) {
     return AlertLogs(
-      id: map['id'] != null ? map['id'] as String : null,
+      id: map['_id'] != null ? map['_id'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
       type: map['type'] != null ? map['type'] as String : null,
       ip: map['ip'] != null ? map['ip'] as String : null,
       status: map['status'] != null ? map['status'] as String : null,
-      connections:
-          map['connections'] != null ? map['connections'] as bool : null,
+      server: map['server'] != null ? map['server'] as bool : null,
       connectionResponse: map['connection_response'] != null
           ? ConnectionResponse.fromMap(
               map['connection_response'] as Map<String, dynamic>)
           : null,
-      createdAt: map['created_at'] != null
-          ? CreatedAt.fromMap(map['created_at'] as Map<String, dynamic>)
-          : null,
+      createdAt:
+          map['created_at'] != null ? (map['created_at'] as String) : null,
     );
   }
 
@@ -94,7 +92,7 @@ class AlertLogs extends Equatable {
       type,
       ip,
       status,
-      connections,
+      server,
       connectionResponse,
       createdAt,
     ];

@@ -2,8 +2,10 @@ class AppStrings {
   static const String serverListing = 'Backends List';
   static const String backendDetails = 'Backend Details';
   static const String name = 'Name';
-  static const String mongodb = 'mongodb';
-  static const String redis = 'redis';
+  static const String mongodb = 'MongoDB';
+  static const String redis = 'Redis';
+  static const String server = 'Server';
+  static const String emptyListText = 'No Errors On Server';
   static const String refresh = 'Refresh';
   static const String pId = "P-Id";
   static const String time = "Time";
@@ -35,6 +37,7 @@ class AppStrings {
   static const String phoneIsRequired = "Phone Number is required";
   static const String passwordIsRequired = "Password is required";
   static const String emailAddressIsNotValid = "Email is not valid";
+  static const String proudlyDevelopedBy = "Proudly developed by";
   static const String deleteConfigurationFromServerWarning = "Are you sure? you want to delete configuration from server?";
 }
 

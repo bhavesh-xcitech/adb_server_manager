@@ -9,3 +9,5 @@ abstract class AlertsLogsEvent extends Equatable {
 
 class GetServerLogs extends AlertsLogsEvent {}
 class GetMoreServerLogs extends AlertsLogsEvent {}
+class DeleteServerLogs extends AlertsLogsEvent {}
+class ResetPage extends AlertsLogsEvent {}

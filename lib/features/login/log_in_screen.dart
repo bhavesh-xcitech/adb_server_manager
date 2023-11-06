@@ -8,6 +8,7 @@ import 'package:adb_server_manager/features/login/bloc/login_bloc.dart';
 import 'package:adb_server_manager/resource/app_colors.dart';
 import 'package:adb_server_manager/resource/app_images.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
+import 'package:adb_server_manager/resource/shared_pref.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -92,6 +93,11 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
+  Future<void> setToLocaleStorage() async {
+    await SharedPref.setLoggedIn(true);
+    await SharedPref.setEnableNotification(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -120,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen>
                       }
                       if (state.loginFormzStatus.isSubmissionSuccess) {
                         context.read<LoginBloc>().add(AddUserInfo(
-                              phone: state.phone,
+                              phone: "+91${state.phone}",
                             ));
                       }
                       if (state.getOtpFormzStatus.isSubmissionFailure) {
@@ -138,9 +144,11 @@ class _LoginScreenState extends State<LoginScreen>
                   BlocListener<LoginBloc, LoginState>(
                     listener: (context, state) async {
                       if (state.addUserFormzStatus.isSubmissionSuccess) {
-                        CustomSnackBar.show(
-                            context: context, message: state.msg.toString());
-                        context.go(AppRouteNames.home);
+                        setToLocaleStorage().then((value) {
+                          CustomSnackBar.show(
+                              context: context, message: state.msg.toString());
+                          context.go(AppRouteNames.home);
+                        });
                       } else if (state.addUserFormzStatus.isSubmissionFailure) {
                         if (state.msg != null &&
                             state.msg!.contains("Restart your App")) {

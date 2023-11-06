@@ -7,7 +7,6 @@ import 'package:adb_server_manager/resource/app_colors.dart';
 import 'package:adb_server_manager/resource/app_images.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 class AlertBoxWidget extends StatelessWidget {
@@ -20,14 +19,51 @@ class AlertBoxWidget extends StatelessWidget {
       required this.index,
       this.isAnimate = false});
 
-  String convertDateTime(int? seconds) {
-    int secondsSinceEpoch =
-        seconds ?? 0; // Replace this with your seconds value
-    DateTime dateTime =
-        DateTime.fromMillisecondsSinceEpoch(secondsSinceEpoch * 1000);
-    String formattedDate = DateFormat("dd-MM-yyyy HH:mm:ss").format(dateTime);
+  String formatTimeDifference(Duration difference) {
+    if (difference.inDays > 0) {
+      int days = difference.inDays;
+      if (days == 1) {
+        return '1 day ago';
+      }
+      return '$days days ago';
+    } else if (difference.inHours > 0) {
+      int hours = difference.inHours;
+      if (hours == 1) {
+        return '1 hour ago';
+      }
+      return '$hours hours ago';
+    } else if (difference.inMinutes > 0) {
+      int minutes = difference.inMinutes;
+      if (minutes == 1) {
+        return '1 minute ago';
+      }
+      return '$minutes minutes ago';
+    } else if (difference.inSeconds > 0) {
+      int seconds = difference.inSeconds;
+      if (seconds == 1) {
+        return '1 second ago';
+      }
+      return '$seconds seconds ago';
+    } else {
+      return 'just now';
+    }
+  }
 
-    return formattedDate;
+  String timeDifference(timestampString) {
+    // String timestampString = '2023-11-06 10:16:21.123Z';
+
+    // Step 1: Parse the timestamp
+    DateTime timestamp = DateTime.parse(timestampString);
+
+    // Step 2: Calculate the time difference
+    DateTime currentTime = DateTime.now();
+    DateTime utcTime = currentTime.toUtc();
+    Duration difference = utcTime.difference(timestamp);
+
+    // Step 3: Format the time difference as "X minutes ago"
+    String formattedTimeDifference = formatTimeDifference(difference);
+
+    return formattedTimeDifference;
   }
 
   @override
@@ -52,22 +88,13 @@ class AlertBoxWidget extends StatelessWidget {
             ),
           ],
           color: AppColors.secondaryBackgroundColor,
-          border: Border.all(color: Colors.red, width: 2.5),
+          border: Border.all(color: Colors.red),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const GapH(3),
-            Align(
-              alignment: Alignment.topRight,
-              child: GoogleText(
-                text: convertDateTime(logs.createdAt?.seconds).toString() ?? "",
-                textColor: Colors.white,
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
             Row(
               children: [
                 GoogleText(
@@ -77,33 +104,63 @@ class AlertBoxWidget extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
                 const GapW(5),
-                SizedBox(height: 20, child: Lottie.asset(AppImages.errorLoti)),
+                if ((!(logs.connectionResponse?.mongodb ?? false) ||
+                    !(logs.connectionResponse?.redis ?? false) ||
+                    !(logs.server ?? false))) ...[
+                  SizedBox(
+                      height: 20,
+                      child: Lottie.asset(AppImages.errorLoti, repeat: false)),
+                ],
+                const Spacer(),
+                GoogleText(
+                  text: timeDifference(logs.createdAt.toString()),
+                  textColor: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                ),
+              ],
+            ),
+            const GapH(5),
+            Row(
+              children: [
+                Expanded(
+                  child: DoubleTextWidget(
+                      needGap: false,
+                      text1: AppStrings.redis,
+                      text2: logs.connectionResponse?.redis.toString() ?? "",
+                      style2: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: logs.connectionResponse?.redis ?? false
+                            ? Colors.blue
+                            : Colors.red,
+                      )),
+                ),
+                const GapW(20),
+                Expanded(
+                  child: DoubleTextWidget(
+                      needGap: false,
+                      text1: AppStrings.mongodb,
+                      text2: logs.connectionResponse?.mongodb.toString() ?? "",
+                      style2: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: logs.connectionResponse?.mongodb ?? false
+                            ? Colors.blue
+                            : Colors.red,
+                      )),
+                )
               ],
             ),
             DoubleTextWidget(
-              text1: AppStrings.name,
-              text2: logs.name ?? "",
-            ),
-            DoubleTextWidget(
-                text1: AppStrings.redis,
-                text2: logs.connectionResponse?.redis.toString() ?? "",
+                needGap: false,
+                text1: AppStrings.server,
+                text2: logs.server.toString(),
                 style2: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
-                  color: logs.connectionResponse?.redis ?? false
-                      ? Colors.blue
-                      : Colors.red,
+                  color: logs.server ?? false ? Colors.blue : Colors.red,
                 )),
-            DoubleTextWidget(
-                text1: AppStrings.mongodb,
-                text2: logs.connectionResponse?.mongodb.toString() ?? "",
-                style2: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: logs.connectionResponse?.mongodb ?? false
-                      ? Colors.blue
-                      : Colors.red,
-                ))
           ],
         ),
       ),

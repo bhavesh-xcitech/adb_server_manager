@@ -2,11 +2,11 @@ import 'package:adb_server_manager/features/login/log_in_repo.dart';
 import 'package:adb_server_manager/features/login/user_model.dart';
 import 'package:adb_server_manager/network_services/api_result_service.dart';
 import 'package:adb_server_manager/resource/appstrings.dart';
-import 'package:adb_server_manager/resource/shared_pref.dart';
 import 'package:bloc/bloc.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:formz/formz.dart';
 
 part 'login_event.dart';
@@ -26,14 +26,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               addUserFormzStatus: FormzStatus.submissionInProgress));
 
           RepoResult? response = await logInReo.setUserInfo(
-            payload: UserData(phone: event.phone, token: state.token).toMap(),
+            payload: UserData(
+                    phone: event.phone ??
+                        FirebaseAuth.instance.currentUser?.phoneNumber,
+                    token: Token(
+                        token: state.token,
+                        notificationEnable: event.isNotificationEnable ?? true))
+                .toMap(),
           );
 
           if (response is RepoSuccess) {
             emit(state.copyWith(
                 addUserFormzStatus: FormzStatus.submissionSuccess,
                 msg: response.message));
-            await SharedPref.setLoggedIn(true);
           } else if (response is RepoFailure) {
             emit(state.copyWith(
               addUserFormzStatus: FormzStatus.submissionFailure,

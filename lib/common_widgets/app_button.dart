@@ -10,11 +10,13 @@ class AppCommonButton extends StatelessWidget {
   final double radius;
   final Widget? child;
   final double? borderWidth;
+  final double? fontSize;
   final Function onTap;
   final String text;
   final bool isEnable;
 
   final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   final bool isLoading;
   final Function? onValidation;
@@ -22,6 +24,7 @@ class AppCommonButton extends StatelessWidget {
   const AppCommonButton(
       {Key? key,
       this.height = 45,
+      this.fontSize,
       this.width,
       this.color = const Color(0xff009df5),
       this.borderColor = Colors.transparent,
@@ -34,6 +37,7 @@ class AppCommonButton extends StatelessWidget {
       this.onValidation,
       this.textColor = Colors.white,
       this.margin,
+      this.padding,
       this.isEnable = true})
       : super(key: key);
 
@@ -47,14 +51,15 @@ class AppCommonButton extends StatelessWidget {
         width: width,
         alignment: Alignment.center,
         margin: margin,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 35,
-        ),
+        padding: padding ??
+            const EdgeInsets.symmetric(
+              horizontal: 35,
+            ),
         decoration: BoxDecoration(
-          color: isEnable ? color:AppColors.secondaryBackgroundColor,
+          color: isEnable ? color : AppColors.secondaryBackgroundColor,
           border: Border.all(color: borderColor!, width: borderWidth!),
           borderRadius: BorderRadius.circular(radius),
-          boxShadow:  [
+          boxShadow: [
             BoxShadow(
               color: Colors.white.withOpacity(0.2),
               spreadRadius: 1,
@@ -76,7 +81,7 @@ class AppCommonButton extends StatelessWidget {
             : GoogleText(
                 text: text,
                 textColor: textColor,
-                fontSize: 16,
+                fontSize: fontSize ?? 16,
                 fontWeight: FontWeight.w600,
               ),
       ),

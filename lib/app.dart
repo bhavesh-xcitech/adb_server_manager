@@ -1,4 +1,6 @@
+import 'package:adb_server_manager/features/alert_logs/bloc/alerts_logs_bloc.dart';
 import 'package:adb_server_manager/features/firebase_notifications_service.dart';
+import 'package:adb_server_manager/features/home/bloc/home_bloc.dart';
 import 'package:adb_server_manager/features/login/bloc/login_bloc.dart';
 import 'package:adb_server_manager/features/logs/bloc/logs_bloc.dart';
 import 'package:adb_server_manager/features/server_list/bloc/backend_listing_bloc.dart';
@@ -28,7 +30,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    pushNotificationService.requestNotificationPermission();
     pushNotificationService.forgroundMessage();
     pushNotificationService.isTokenRefresh(loginBloc);
     pushNotificationService.getToken(loginBloc);
@@ -48,6 +49,14 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => loginBloc,
+        ),
+        BlocProvider(
+          create: (context) => HomeBloc(),
+          //prociding here cause of notification routing
+        ),
+        BlocProvider(
+          create: (context) => AlertsLogsBloc(),
+          //prociding here cause of notification routing
         ),
       ],
       child: MaterialApp.router(

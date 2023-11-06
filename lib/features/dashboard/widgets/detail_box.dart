@@ -42,12 +42,14 @@ class DetailBox extends StatelessWidget {
                 SizedBox(
                     height: 20,
                     child: Lottie.asset('assets/success.json',
+                    repeat: false,
                         frameRate: FrameRate(40))),
               ] else ...[
                 SizedBox(
                     height: 20,
                     child: Lottie.asset(
                       'assets/error.json',
+                      repeat: false,
                     )),
               ],
             ],

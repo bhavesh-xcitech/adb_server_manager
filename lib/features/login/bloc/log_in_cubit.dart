@@ -1,5 +1,4 @@
 import 'package:adb_server_manager/features/login/bloc/login_bloc.dart';
-import 'package:adb_server_manager/resource/shared_pref.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:formz/formz.dart';

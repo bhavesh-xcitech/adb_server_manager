@@ -8,4 +8,5 @@ class ApisEndPoints {
   static const String login = 'pm2/user-info';
   static const String allowedUsers = 'pm2/allowed-users';
   static const String dashboardStatus = 'pm2/getDashboardStatus';
+  static const String deleteLogs = 'pm2/deleteServerLogs';
 }

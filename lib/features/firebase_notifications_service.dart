@@ -2,12 +2,14 @@
 
 import 'dart:io';
 
+import 'package:adb_server_manager/features/home/bloc/home_bloc.dart';
 import 'package:adb_server_manager/features/login/bloc/login_bloc.dart';
 import 'package:adb_server_manager/routers/routes_name.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 // import 'package:permission_handler/permission_handler.dart';
@@ -170,7 +172,10 @@ class PushNotificationService {
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) {
-    context.go(AppRouteNames.home, extra: {"selectedIndex": 1});
+    context.read<HomeBloc>().add(const UpdateSelectedIndex(index: 1));
+    context.go(
+      AppRouteNames.home,
+    );
 
     // if(message.data['type'] =='msj'){
     //   Navigator.push(context,

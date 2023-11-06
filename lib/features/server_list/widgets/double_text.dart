@@ -1,3 +1,4 @@
+import 'package:adb_server_manager/common_widgets/app_gap_width.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -6,6 +7,7 @@ class DoubleTextWidget extends StatelessWidget {
       {Key? key,
       required this.text1,
       required this.text2,
+      this.needGap = true,
       this.style1,
       this.style2})
       : super(key: key);
@@ -13,6 +15,7 @@ class DoubleTextWidget extends StatelessWidget {
   final String text2;
   final TextStyle? style1;
   final TextStyle? style2;
+  final bool needGap;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +23,19 @@ class DoubleTextWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         children: [
-          Expanded(
-            child: Text(
+          if (needGap) ...[
+            Expanded(
+              child: Text(
+                "$text1 :",
+                style: style1 ??
+                    GoogleFonts.nunito(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: Colors.white),
+              ),
+            ),
+          ] else ...[
+            Text(
               "$text1 :",
               style: style1 ??
                   GoogleFonts.nunito(
@@ -29,7 +43,8 @@ class DoubleTextWidget extends StatelessWidget {
                       fontSize: 13,
                       color: Colors.white),
             ),
-          ),
+            const GapW(10)
+          ],
           Text(
             text2,
             style: style2 ??

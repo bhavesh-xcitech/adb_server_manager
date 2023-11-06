@@ -116,7 +116,7 @@ class _BackendDetailsState extends State<BackendDetails> {
           backgroundColor: AppColors.backgroundColor,
           appBar: CommonAppBar(
             text: AppStrings.backendDetails,
-            onBackButton: () {
+            onTapOfLeading: () {
               context.read<LogsBloc>().add(ClearIndividualLogs());
             },
           ),

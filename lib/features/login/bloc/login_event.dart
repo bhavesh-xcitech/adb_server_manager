@@ -27,10 +27,12 @@ class GetAuthenticatedUsers extends LoginEvent {
 
 class AddUserInfo extends LoginEvent {
   final String? phone;
+  final bool? isNotificationEnable;
   final String? uid;
   const AddUserInfo({
     this.phone,
     this.uid,
+    this.isNotificationEnable,
   });
 }
 
